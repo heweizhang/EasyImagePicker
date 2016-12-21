@@ -5,5 +5,5 @@
 TODO：
 ImageInfo 重写equqls ?
 暂时忽略android6.0以上权限问题
-
+已完成：使用Loader加载图片资源
 
