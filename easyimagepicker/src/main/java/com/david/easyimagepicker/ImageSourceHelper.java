@@ -114,19 +114,20 @@ public class ImageSourceHelper implements LoaderManager.LoaderCallbacks<Cursor> 
                 }
             }
 
-            if(data.getCount() > 0 ){
+            if (data.getCount() > 0) {
                 //构造默认文件夹集合，即：所有图片
                 ImageFolder folderAll = new ImageFolder();
                 folderAll.setName(activity.getResources().getString(R.string.all_images));
                 folderAll.setPath("/");
                 folderAll.setFirstImage(imageInfos.get(0));
                 folderAll.setImageInfoList(imageInfos);
-                imageFolders.add(0,folderAll);//放在首位
+                imageFolders.add(0, folderAll);//放在首位
             }
 
-            //完成加载任务，开始回调
-            //TODO:将数据存到内存中
-            imagesLoaderListener.onImagesLoaded(imageFolders);
+            //将数据存到内存中
+            EasyImagePicker.getInstance().setImageFolderList(imageFolders);
+            //完成加载任务，开始回调,不需要传任何东西，因为我们可以通过 EasyImagePicker.getInstance().getImageFolderList();
+            imagesLoaderListener.onImagesLoaded();
         }
     }
 
@@ -137,6 +138,6 @@ public class ImageSourceHelper implements LoaderManager.LoaderCallbacks<Cursor> 
 
 
     public interface ImagesLoaderListener {
-        void onImagesLoaded(List<ImageFolder> imageInfoList);
+        void onImagesLoaded();
     }
 }
