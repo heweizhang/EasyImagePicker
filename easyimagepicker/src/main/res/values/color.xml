@@ -2,4 +2,5 @@
 <resources>
     <color name="theme_color">#cc22292c</color>
     <color name="theme_color_footbar">#dc22292c</color>
+    <color name="white">#FFFFFF</color>
 </resources>

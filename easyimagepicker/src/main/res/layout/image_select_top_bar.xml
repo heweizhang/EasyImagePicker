@@ -50,7 +50,7 @@
 
     <ImageView
         android:id="@+id/btn_del"
-        android:layout_width="48dp"
+        android:layout_width="@dimen/y36"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"

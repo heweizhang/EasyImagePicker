@@ -3,6 +3,7 @@ package com.david.easyimagepicker;
 import com.david.easyimagepicker.entity.ImageFolder;
 import com.david.easyimagepicker.entity.ImageInfo;
 import com.david.easyimagepicker.imageloader.ImageLoader;
+import com.david.easyimagepicker.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,15 +25,14 @@ public class EasyImagePicker {
 
     private boolean loadAnima = true; //默认加入图片加载动画
 
-    public int getMultipleLimit() {
-        return multipleLimit;
-    }
+    private OnImageSelectedChangedListener onImageSelectedChangedListener;//图片选中情况回调
+
 
     public void setMultipleLimit(int multipleLimit) {
         this.multipleLimit = multipleLimit;
     }
 
-    private int multipleLimit = 0;//多选最大值,传入0：代表单选
+    private int multipleLimit = 5;//多选最大值,传入1：代表单选
 
     private static EasyImagePicker instance;
 
@@ -56,6 +56,10 @@ public class EasyImagePicker {
         this.loadAnima = loadAnima;
     }
 
+    public int getMultipleLimit() {
+        return multipleLimit;
+    }
+
     public ImageLoader getImageLoader() {
         return imageLoader;
     }
@@ -72,6 +76,15 @@ public class EasyImagePicker {
         this.selectedImagesList = selectedImagesList;
     }
 
+    public void addSelectedImagesList(int position, ImageInfo item, boolean isAdd) {
+        if (isAdd)
+            selectedImagesList.add(item);
+        else
+            selectedImagesList.remove(item);
+        if (onImageSelectedChangedListener != null) {
+            onImageSelectedChangedListener.onImageSelectedChanged();
+        }
+    }
 
     public int getImageWidthSize() {
         return imageWidthSize;
@@ -87,6 +100,15 @@ public class EasyImagePicker {
 
     public void setImageFolderList(ArrayList<ImageFolder> imageFolderList) {
         this.imageFolderList = imageFolderList;
+    }
+
+    //图片选中回调
+    public interface OnImageSelectedChangedListener {
+        void onImageSelectedChanged();
+    }
+
+    public void setImageSelectedChangedListener(OnImageSelectedChangedListener onImageSelectedChangedListener) {
+        this.onImageSelectedChangedListener = onImageSelectedChangedListener;
     }
 
     /**

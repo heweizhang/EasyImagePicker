@@ -17,6 +17,15 @@ public class PixelUtil {
         //高度 dm.heightPixels
 //        LogUtil.i("info", "getScreenWidth" + dm.widthPixels);
         return dm.widthPixels;
+    }    //获取运行屏幕宽度
+
+    public static int getScreenHeight(Activity context) {
+        DisplayMetrics dm = new DisplayMetrics();
+        context.getWindowManager().getDefaultDisplay().getMetrics(dm);
+        //宽度 dm.widthPixels
+        //高度 dm.heightPixels
+//        LogUtil.i("info", "getScreenWidth" + dm.widthPixels);
+        return dm.heightPixels;
     }
 
     /**
