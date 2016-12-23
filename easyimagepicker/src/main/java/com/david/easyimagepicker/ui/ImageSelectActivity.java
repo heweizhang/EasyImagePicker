@@ -1,13 +1,11 @@
 package com.david.easyimagepicker.ui;
 
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.david.easyimagepicker.BaseImageActivity;
@@ -16,6 +14,7 @@ import com.david.easyimagepicker.ImageSourceHelper;
 import com.david.easyimagepicker.R;
 import com.david.easyimagepicker.adapter.FolderListAdapter;
 import com.david.easyimagepicker.adapter.ImageGridAdapter;
+import com.david.easyimagepicker.util.LogUtil;
 import com.david.easyimagepicker.view.FolderPopWindow;
 
 
@@ -25,10 +24,12 @@ import com.david.easyimagepicker.view.FolderPopWindow;
  */
 
 public class ImageSelectActivity extends BaseImageActivity implements ImageSourceHelper.ImagesLoaderListener, View.OnClickListener, EasyImagePicker.OnImageSelectedChangedListener {
-    private ImageGridAdapter adapter;
     private RecyclerView rv_photoviews;
-    private Button btn_preview, btn_ok;
+    private Button btn_preview, btn_ok, btn_dir;
     private RelativeLayout footer_bar;
+    private FolderPopWindow folderPopWindow;
+    private ImageGridAdapter adapter;
+    private FolderListAdapter foldersAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,22 +48,25 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
         rv_photoviews.setLayoutManager(layoutManager);
         adapter = new ImageGridAdapter(this, null);
         rv_photoviews.setAdapter(adapter);
+        foldersAdapter = new FolderListAdapter(this, null);
+
         btn_preview = (Button) findViewById(R.id.btn_preview);
+        btn_dir = (Button) findViewById(R.id.btn_dir);
         btn_ok = (Button) findViewById(R.id.btn_ok);
         footer_bar = (RelativeLayout) findViewById(R.id.footer_bar);
 
         onImageSelectedChanged();
 
-        findViewById(R.id.btn_dir).setOnClickListener(this);
         findViewById(R.id.btn_back).setOnClickListener(this);
         btn_preview.setOnClickListener(this);
+        btn_dir.setOnClickListener(this);
     }
 
     @Override
     public void onImagesLoaded() {
 
         //设置数据
-        adapter.setImages(EasyImagePicker.getInstance().getImageFolderList().get(0).getImageInfoList());
+        adapter.setImages(EasyImagePicker.getInstance().getImageFolderList().get(0).getImageInfoList());//默认第一个文件夹即：全部图片
         adapter.notifyDataSetChanged();
 
     }
@@ -71,15 +75,52 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
     public void onClick(View view) {
         int id = view.getId();
         if (id == R.id.btn_dir) {
-            FolderPopWindow folderPopWindow = new FolderPopWindow(ImageSelectActivity.this, new FolderListAdapter(null, ImageSelectActivity.this));
-            folderPopWindow.showAtLocation(footer_bar, Gravity.NO_GRAVITY, 0, 0);
+            if (!isFirstInitPop) {
+                initPop();
+                isFirstInitPop = true;
+            }
+            if (folderPopWindow != null && !folderPopWindow.isShowing()) {
+                int[] location = new int[2];
+                footer_bar.getLocationOnScreen(location);
+                LogUtil.e("info", "footer_bar:" + location[0]);
+                LogUtil.e("info", "footer_bar:" + location[1]);
+                folderPopWindow.showAtLocation(footer_bar, Gravity.NO_GRAVITY, 0,
+                        0);
+            }
+
         } else if (id == R.id.btn_preview) {
 
         } else if (id == R.id.btn_back) {
             finish();
+        } else if(id == R.id.btn_ok){
+
         }
 
+
     }
+
+
+    private boolean isFirstInitPop;
+
+    private void initPop() {
+        folderPopWindow = new FolderPopWindow(ImageSelectActivity.this, foldersAdapter);
+
+        foldersAdapter.setImageFolders(EasyImagePicker.getInstance().getImageFolderList());
+        foldersAdapter.notifyDataSetChanged();
+        foldersAdapter.setOnItemClickListener(new FolderListAdapter.CustomItemOnClick() {
+            @Override
+            public void onItemClick(int pos) {
+                foldersAdapter.setCurrentFolderIndex(pos);
+                adapter.setImages(EasyImagePicker.getInstance().getImageFolderList().get(pos).getImageInfoList());
+                adapter.notifyDataSetChanged();
+                btn_dir.setText(EasyImagePicker.getInstance().getImageFolderList().get(pos).getName());
+                if (folderPopWindow != null && folderPopWindow.isShowing()) {
+                    folderPopWindow.dismiss();
+                }
+            }
+        });
+    }
+
 
     @Override
     public void onImageSelectedChanged() {

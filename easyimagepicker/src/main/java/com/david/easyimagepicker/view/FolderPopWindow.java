@@ -42,12 +42,10 @@ public class FolderPopWindow extends PopupWindow {
         setAnimationStyle(0);
         view.setAnimation(AnimationUtils.loadAnimation(context, R.anim.gf_flip_horizontal_in));
 
-        //ListView 高度不满屏幕高度5/8时 高度为listView高度
-    /*    ViewGroup.LayoutParams listParams = rv_folderview.getLayoutParams();
-        listParams.height = rv_folderview.getHeight() > PixelUtil.getScreenHeight((Activity) context) * 3 / 8  ? PixelUtil.getScreenHeight((Activity) context) * 3 / 8 : rv_folderview.getHeight();
-        listParams.width = RecyclerView.LayoutParams.MATCH_PARENT;
-        rv_folderview.setLayoutParams(listParams);*/
 
+    }
 
+    public interface OnItemClickListener{
+        void onItemClick();
     }
 }

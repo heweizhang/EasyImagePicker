@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * Created by david on 2016/12/21.
- * 图片选择器的入口，配置文件
+ * 图片选择器的核心类
  */
 
 public class EasyImagePicker {
@@ -25,8 +25,9 @@ public class EasyImagePicker {
 
     private boolean loadAnima = true; //默认加入图片加载动画
 
-    private OnImageSelectedChangedListener onImageSelectedChangedListener;//图片选中情况回调
+    private int currentFolderIndex = 0;//默认选中文件夹：全部文件
 
+    private OnImageSelectedChangedListener onImageSelectedChangedListener;//图片选中情况回调
 
     public void setMultipleLimit(int multipleLimit) {
         this.multipleLimit = multipleLimit;
@@ -70,6 +71,14 @@ public class EasyImagePicker {
 
     public ArrayList<ImageInfo> getSelectedImagesList() {
         return selectedImagesList;
+    }
+
+    public int getCurrentFolderIndex() {
+        return currentFolderIndex;
+    }
+
+    public void setCurrentFolderIndex(int currentFolderIndex) {
+        this.currentFolderIndex = currentFolderIndex;
     }
 
     public void setSelectedImagesList(ArrayList<ImageInfo> selectedImagesList) {

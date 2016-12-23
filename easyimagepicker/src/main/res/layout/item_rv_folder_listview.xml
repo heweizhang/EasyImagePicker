@@ -12,6 +12,7 @@
         android:id="@+id/iv_folders_icon"
         android:layout_width="@dimen/y44"
         android:layout_height="@dimen/y44"
+        android:scaleType="centerCrop"
         android:layout_marginLeft="@dimen/x10"
         android:src="@drawable/default_image" />
 
@@ -47,6 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+        android:visibility="gone"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="12dp"
         android:src="@drawable/list_selected"/>

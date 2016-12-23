@@ -13,6 +13,7 @@ public class ImageFolder implements Serializable {
     private ImageInfo firstImage;//文件夹图标;默认该文件夹下首张
     private ArrayList<ImageInfo> imageInfoList;//该文件夹下图片集合
 
+
     public String getName() {
         return name;
     }
