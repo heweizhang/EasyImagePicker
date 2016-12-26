@@ -1,9 +1,47 @@
 # EasyImagePicker
 网上开源的图片选择器已经很多了，用起来方便，但是直接使用却不利于新手的学习，是不是该尝试着自己写一个？
 
+#### 先来看看我们的需求：
+1、 项目中需要做一个多图上传的功能，需要用到多图选择器，上传原图，不需要编辑以及压缩
+2、 选择图片后需要可以大图预览
+
+
+
+
 ###### 12-21:
 TODO：
 ImageInfo 重写equqls ?
 暂时忽略android6.0以上权限问题
 已完成：使用Loader加载图片资源
 
+#### 如何使用
+###### 初始化图片选择器：
+使用建造者模式来编写PickerConfig，配置起来，更加方便
+```
+//初始化EasyImagePicker,必须调用一次，可在AppLication中初始化,也可以在普通Activity或fragment中
+//多次初始化，配置为覆盖操作，即最后一次的配置生效
+PickerConfig config = new PickerConfig.Builder(this, new GlideImageLoader())//传入ImageLoader
+//.setAnimRes(0)//传入0为不显示动画，不传显示默认动画，用户也可以传入自定义的动画
+  .setLog("test") //默认显示调试log，传入null为不打印
+//.setImageWidthSize(3) //图片选择器显示列数，默认为3列
+  .build();
+EasyImagePicker.getInstance().init(config);
+
+```
+
+###### 调起图片选择器：
+```
+
+ //不区分单选多选，传入1即为单选,需要显示初始化已选中图片，需要传入list,或直接传入null
+EasyImagePicker.getInstance().openPicker(IMAGEPICKERREQUESTCODE, 8, list, new EasyImagePicker.ImagePickerResultCallBack() {
+     @Override
+     public void onHanlderSuccess(int requestCode, ArrayList<ImageInfo> resultList) {
+         LogUtil.e("info", resultList.size());
+     }
+
+    @Override
+    public void onHanlderFailure(int requestCode, String errorMsg) {
+          LogUtil.e("info", errorMsg);
+    }
+});
+```

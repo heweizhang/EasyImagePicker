@@ -30,8 +30,6 @@ public class EasyImagePicker {
 
     private int currentFolderIndex = 0;//默认选中文件夹：全部文件
 
-    private String log = "easyimagepicker";//默认log
-
     private OnImageSelectedChangedListener onImageSelectedChangedListener;//图片选中情况回调
 
     public int getImagePickRequestCode() {
@@ -46,17 +44,12 @@ public class EasyImagePicker {
 
     private int imagePickRequestCode;
 
-    public void setMultipleLimit(int multipleLimit) {
-        this.multipleLimit = multipleLimit;
-    }
+    private static int multipleLimit = 1;//多选最大值,传入1：代表单选
 
     public static int getMultipleLimit() {
         return multipleLimit;
     }
 
-    private static int multipleLimit = 5;//多选最大值,传入1：代表单选
-
-    private static int animRes = R.anim.gf_flip_horizontal_in;
 
     private static EasyImagePicker instance;
 
@@ -77,15 +70,37 @@ public class EasyImagePicker {
 
     }
 
-    public void openPicker(int requestCallBackCode, int multipleLimit, ImagePickerResultCallBack resultCallBack) {
-        this.multipleLimit = multipleLimit;
-        resultCallBackListener = resultCallBack;
-        imagePickRequestCode = requestCallBackCode;
-        if (getPickerConfig().getImageLoader() == null) {
-            LogUtil.e(log, "imageLoader == null");
+    public void openPicker(int requestCallBackCode, int multipleLimit, ArrayList<ImageInfo> selectedImagesList, ImagePickerResultCallBack resultCallBack) {
+        if (null == resultCallBack) {
+            LogUtil.e(getPickerConfig().getLog(), "please init the resultCallBack");
+            return;
+        } else
+            resultCallBackListener = resultCallBack;
+
+        if (null == getPickerConfig()) {
+            LogUtil.e(getPickerConfig().getLog(), "pickerConfig is null,please init it in the first");
             resultCallBack.onHanlderFailure(requestCallBackCode, "please init easyImagePicker!");
             return;
         }
+
+        if (multipleLimit < 1) {
+            resultCallBack.onHanlderFailure(requestCallBackCode, "multipleLimit must not less than 1");
+            return;
+        } else
+            this.multipleLimit = multipleLimit;
+
+        if (null != selectedImagesList) {
+            if (selectedImagesList.size() > multipleLimit) {
+                LogUtil.e(getPickerConfig().getLog(), "the input selectedImagesList.size() must not less than multipleLimit");
+            } else{
+                this.selectedImagesList.clear();
+                this.selectedImagesList.addAll(selectedImagesList);
+                LogUtil.e(getPickerConfig().getLog(), "the selectedImagesList init succeed" + selectedImagesList.size());
+            }
+
+        }
+        imagePickRequestCode = requestCallBackCode;
+
         //TODO:6.0权限动态申请
         getPickerConfig().getContext().startActivity(new Intent(getPickerConfig().getContext(), ImageSelectActivity.class));
 
@@ -101,10 +116,6 @@ public class EasyImagePicker {
 
     public void setCurrentFolderIndex(int currentFolderIndex) {
         this.currentFolderIndex = currentFolderIndex;
-    }
-
-    public void setSelectedImagesList(ArrayList<ImageInfo> selectedImagesList) {
-        this.selectedImagesList = selectedImagesList;
     }
 
     public void addSelectedImagesList(int position, ImageInfo item, boolean isAdd) {
@@ -141,10 +152,10 @@ public class EasyImagePicker {
         /**
          * 处理成功
          *
-         * @param reqeustCode
+         * @param requestCode
          * @param resultList
          */
-        public void onHanlderSuccess(int reqeustCode, List<ImageInfo> resultList);
+        public void onHanlderSuccess(int requestCode, ArrayList<ImageInfo> resultList);
 
         /**
          * 处理失败或异常
