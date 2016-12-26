@@ -17,6 +17,7 @@ public class ImageInfo implements Serializable {
     private String imageMimeType;   //图片的类型
     private long imageSize;// 图片大小
 
+
     public ImageInfo(String imageName, int imageWidth, int iamgeHeidht, String imagePath, long imageCreatedTime, String imageMimeType, long imageSize) {
         this.imageName = imageName;
         this.imageWidth = imageWidth;
@@ -94,5 +95,18 @@ public class ImageInfo implements Serializable {
             return false;
         }
         return TextUtils.equals(info.getImagePath(), getImagePath());
+    }
+
+    @Override
+    public String toString() {
+        return "ImageInfo{" +
+                "imageName='" + imageName + '\'' +
+                ", imageWidth=" + imageWidth +
+                ", iamgeHeidht=" + iamgeHeidht +
+                ", imagePath='" + imagePath + '\'' +
+                ", imageCreatedTime=" + imageCreatedTime +
+                ", imageMimeType='" + imageMimeType + '\'' +
+                ", imageSize=" + imageSize +
+                '}';
     }
 }

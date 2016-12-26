@@ -1,8 +1,11 @@
 package com.david.easyimagepicker;
 
+import android.content.Intent;
+
 import com.david.easyimagepicker.entity.ImageFolder;
 import com.david.easyimagepicker.entity.ImageInfo;
 import com.david.easyimagepicker.imageloader.ImageLoader;
+import com.david.easyimagepicker.ui.ImageSelectActivity;
 import com.david.easyimagepicker.util.LogUtil;
 
 import java.util.ArrayList;
@@ -15,25 +18,45 @@ import java.util.List;
 
 public class EasyImagePicker {
 
+    private PickerConfig pickerConfig;
+
+    public PickerConfig getPickerConfig() {
+        return pickerConfig;
+    }
+
     private ArrayList<ImageFolder> imageFolderList = new ArrayList<>();//存放所有文件夹
 
     private ArrayList<ImageInfo> selectedImagesList = new ArrayList<>();//存放已选中的图片
 
-    private int imageWidthSize = 3;//默认gridview显示图片为3列
-
-    private ImageLoader imageLoader;     //外部传入图片加载器
-
-    private boolean loadAnima = true; //默认加入图片加载动画
-
     private int currentFolderIndex = 0;//默认选中文件夹：全部文件
 
+    private String log = "easyimagepicker";//默认log
+
     private OnImageSelectedChangedListener onImageSelectedChangedListener;//图片选中情况回调
+
+    public int getImagePickRequestCode() {
+        return imagePickRequestCode;
+    }
+
+    public ImagePickerResultCallBack getResultCallBackListener() {
+        return resultCallBackListener;
+    }
+
+    private ImagePickerResultCallBack resultCallBackListener;
+
+    private int imagePickRequestCode;
 
     public void setMultipleLimit(int multipleLimit) {
         this.multipleLimit = multipleLimit;
     }
 
-    private int multipleLimit = 5;//多选最大值,传入1：代表单选
+    public static int getMultipleLimit() {
+        return multipleLimit;
+    }
+
+    private static int multipleLimit = 5;//多选最大值,传入1：代表单选
+
+    private static int animRes = R.anim.gf_flip_horizontal_in;
 
     private static EasyImagePicker instance;
 
@@ -48,25 +71,24 @@ public class EasyImagePicker {
         return instance;
     }
 
+    public void init(PickerConfig config) {
 
-    public boolean isLoadAnima() {
-        return loadAnima;
+        pickerConfig = config;
+
     }
 
-    public void setLoadAnima(boolean loadAnima) {
-        this.loadAnima = loadAnima;
-    }
+    public void openPicker(int requestCallBackCode, int multipleLimit, ImagePickerResultCallBack resultCallBack) {
+        this.multipleLimit = multipleLimit;
+        resultCallBackListener = resultCallBack;
+        imagePickRequestCode = requestCallBackCode;
+        if (getPickerConfig().getImageLoader() == null) {
+            LogUtil.e(log, "imageLoader == null");
+            resultCallBack.onHanlderFailure(requestCallBackCode, "please init easyImagePicker!");
+            return;
+        }
+        //TODO:6.0权限动态申请
+        getPickerConfig().getContext().startActivity(new Intent(getPickerConfig().getContext(), ImageSelectActivity.class));
 
-    public int getMultipleLimit() {
-        return multipleLimit;
-    }
-
-    public ImageLoader getImageLoader() {
-        return imageLoader;
-    }
-
-    public void setImageLoader(ImageLoader imageLoader) {
-        this.imageLoader = imageLoader;
     }
 
     public ArrayList<ImageInfo> getSelectedImagesList() {
@@ -93,14 +115,6 @@ public class EasyImagePicker {
         if (onImageSelectedChangedListener != null) {
             onImageSelectedChangedListener.onImageSelectedChanged();
         }
-    }
-
-    public int getImageWidthSize() {
-        return imageWidthSize;
-    }
-
-    public void setImageWidthSize(int imageWidthSize) {
-        this.imageWidthSize = imageWidthSize;
     }
 
     public ArrayList<ImageFolder> getImageFolderList() {

@@ -58,12 +58,12 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         //保证gridview显示的图片为正方形
         ViewGroup.LayoutParams params = ((ItemViewHolder) (holder)).iv_thumbnail.getLayoutParams();
         params.width = RecyclerView.LayoutParams.MATCH_PARENT;
-        params.height = diviceWidth / imagePicker.getImageWidthSize();
+        params.height = diviceWidth / imagePicker.getPickerConfig().getImageWidthSize();
         ((ItemViewHolder) (holder)).iv_thumbnail.setLayoutParams(params);
 
 
-        if (imagePicker.isLoadAnima()) {//读取配置文件，判断是否加载动画
-            ((ItemViewHolder) (holder)).iv_thumbnail.setAnimation(AnimationUtils.loadAnimation(activity, R.anim.gf_flip_horizontal_in));
+        if (imagePicker.getPickerConfig().getAnimRes() != 0) {//读取配置文件，判断是否加载动画
+            ((ItemViewHolder) (holder)).iv_thumbnail.setAnimation(AnimationUtils.loadAnimation(activity, imagePicker.getPickerConfig().getAnimRes() ));
         }
 
         ((ItemViewHolder) holder).cb_check.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +99,7 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             }
         }
 
-        imagePicker.getImageLoader().displayImage(activity, images.get(position).getImagePath(),
+        imagePicker.getPickerConfig().getImageLoader().displayImage(activity, images.get(position).getImagePath(),
                 ((ItemViewHolder) (holder)).iv_thumbnail, images.get(position).getImageWidth(),
                 images.get(position).getIamgeHeidht());
     }

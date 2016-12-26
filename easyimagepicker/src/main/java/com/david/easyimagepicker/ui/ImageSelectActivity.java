@@ -44,7 +44,7 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
 
     private void initView() {
         rv_photoviews = (RecyclerView) findViewById(R.id.rv_photoviews);
-        GridLayoutManager layoutManager = new GridLayoutManager(this, EasyImagePicker.getInstance().getImageWidthSize());
+        GridLayoutManager layoutManager = new GridLayoutManager(this, EasyImagePicker.getInstance().getPickerConfig().getImageWidthSize());
         rv_photoviews.setLayoutManager(layoutManager);
         adapter = new ImageGridAdapter(this, null);
         rv_photoviews.setAdapter(adapter);
@@ -60,6 +60,7 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
         findViewById(R.id.btn_back).setOnClickListener(this);
         btn_preview.setOnClickListener(this);
         btn_dir.setOnClickListener(this);
+        btn_ok.setOnClickListener(this);
     }
 
     @Override
@@ -93,7 +94,12 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
         } else if (id == R.id.btn_back) {
             finish();
         } else if(id == R.id.btn_ok){
-
+            LogUtil.e(EasyImagePicker.getInstance().getPickerConfig().getLog(),"btn_ok");
+            if(EasyImagePicker.getInstance().getResultCallBackListener() != null){
+                EasyImagePicker.getInstance().getResultCallBackListener().onHanlderSuccess(EasyImagePicker.getInstance().getImagePickRequestCode(),EasyImagePicker.getInstance().getSelectedImagesList());
+                finish();
+            }else
+                LogUtil.e(EasyImagePicker.getInstance().getPickerConfig().getLog(),"--------------- 未设置回调 ----------------");
         }
 
 

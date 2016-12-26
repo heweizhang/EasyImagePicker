@@ -63,7 +63,7 @@ public class FolderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ImageFolder folderBean = imageFolders.get(position);
-        imagePicker.getImageLoader().displayImage((Activity) context, folderBean.getFirstImage().getImagePath(),
+        imagePicker.getPickerConfig().getImageLoader().displayImage((Activity) context, folderBean.getFirstImage().getImagePath(),
                 ((ItemViewHolder) (holder)).iv_folders_icon, folderBean.getFirstImage().getImageWidth(), folderBean.getFirstImage().getIamgeHeidht());
         ((ItemViewHolder) holder).tv_folder_name.setText(folderBean.getName());
         ((ItemViewHolder) holder).tv_image_count.setText(String.format("共%d张", folderBean.getImageInfoList().size()));
