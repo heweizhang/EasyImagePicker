@@ -31,6 +31,7 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private ArrayList<ImageInfo> mSelectedImages; //全局保存的已经选中的图片数据
     private int diviceWidth; //设备宽度
     public int multipleLimit;//多选最大值,1 为单选
+    private CustomItemOnClick customItemOnClick;
 
     //构造adapter时只需要传入上下文以及需要显示的数据，其余的数据通过EasyImagePicker中获取
     public ImageGridAdapter(Activity activity, ArrayList<ImageInfo> images) {
@@ -47,9 +48,23 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(activity).inflate(R.layout.item_rv_image_gridview, parent, false);
-        ItemViewHolder itemViewHolder = new ItemViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, final int viewType) {
+         View view = LayoutInflater.from(activity).inflate(R.layout.item_rv_image_gridview, parent, false);
+        final ItemViewHolder itemViewHolder = new ItemViewHolder(view);
+        if(customItemOnClick != null){
+            itemViewHolder.view_mask.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    customItemOnClick.onItemClick(itemViewHolder.getLayoutPosition());
+                }
+            });
+            itemViewHolder.iv_thumbnail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    customItemOnClick.onItemClick(itemViewHolder.getLayoutPosition());
+                }
+            });
+        }
         return itemViewHolder;
     }
 
@@ -120,5 +135,13 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             cb_check = (CheckBox) itemView.findViewById(R.id.cb_check);
             view_mask = (View) itemView.findViewById(R.id.view_mask);
         }
+    }
+
+    public void setItemOnClickListener(CustomItemOnClick itemOnClick){
+        this.customItemOnClick = itemOnClick;
+    }
+
+    public interface CustomItemOnClick{
+        void onItemClick(int pos);
     }
 }

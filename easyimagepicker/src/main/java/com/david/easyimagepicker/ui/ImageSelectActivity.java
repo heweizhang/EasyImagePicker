@@ -1,5 +1,6 @@
 package com.david.easyimagepicker.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -61,15 +62,24 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
         btn_preview.setOnClickListener(this);
         btn_dir.setOnClickListener(this);
         btn_ok.setOnClickListener(this);
+
+        adapter.setItemOnClickListener(new ImageGridAdapter.CustomItemOnClick() {
+            @Override
+            public void onItemClick(int pos) {
+                Intent intent = new Intent(ImageSelectActivity.this, ImagePreViewActivity.class);
+                intent.putExtra("folderIndex", EasyImagePicker.getInstance().getCurrentFolderIndex());//当前选中文件夹
+                intent.putExtra("currentPos", pos);//当前item位置
+
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
     public void onImagesLoaded() {
-
         //设置数据
         adapter.setImages(EasyImagePicker.getInstance().getImageFolderList().get(0).getImageInfoList());//默认第一个文件夹即：全部图片
         adapter.notifyDataSetChanged();
-
     }
 
     @Override
@@ -93,13 +103,13 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
 
         } else if (id == R.id.btn_back) {
             finish();
-        } else if(id == R.id.btn_ok){
-            LogUtil.e(EasyImagePicker.getInstance().getPickerConfig().getLog(),"btn_ok");
-            if(EasyImagePicker.getInstance().getResultCallBackListener() != null){
-                EasyImagePicker.getInstance().getResultCallBackListener().onHanlderSuccess(EasyImagePicker.getInstance().getImagePickRequestCode(),EasyImagePicker.getInstance().getSelectedImagesList());
+        } else if (id == R.id.btn_ok) {
+            LogUtil.e(EasyImagePicker.getInstance().getPickerConfig().getLog(), "btn_ok");
+            if (EasyImagePicker.getInstance().getResultCallBackListener() != null) {
+                EasyImagePicker.getInstance().getResultCallBackListener().onHanlderSuccess(EasyImagePicker.getInstance().getImagePickRequestCode(), EasyImagePicker.getInstance().getSelectedImagesList());
                 finish();
-            }else
-                LogUtil.e(EasyImagePicker.getInstance().getPickerConfig().getLog(),"--------------- 未设置回调 ----------------");
+            } else
+                LogUtil.e(EasyImagePicker.getInstance().getPickerConfig().getLog(), "--------------- 未设置回调 ----------------");
         }
 
 

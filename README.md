@@ -6,8 +6,6 @@
 2、 选择图片后需要可以大图预览
 
 
-
-
 ###### 12-21:
 TODO：
 ImageInfo 重写equqls ?
@@ -31,7 +29,6 @@ EasyImagePicker.getInstance().init(config);
 
 ###### 调起图片选择器：
 ```
-
  //不区分单选多选，传入1即为单选,需要显示初始化已选中图片，需要传入list,或直接传入null
 EasyImagePicker.getInstance().openPicker(IMAGEPICKERREQUESTCODE, 8, list, new EasyImagePicker.ImagePickerResultCallBack() {
      @Override
