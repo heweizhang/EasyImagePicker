@@ -90,7 +90,7 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     ((ItemViewHolder) holder).cb_check.setChecked(false);
                     ((ItemViewHolder) holder).view_mask.setVisibility(View.GONE);
                 } else {
-                    imagePicker.addSelectedImagesList(position, images.get(position), ((ItemViewHolder) holder).cb_check.isChecked());
+                    imagePicker.addSelectedImagesList(images.get(position), ((ItemViewHolder) holder).cb_check.isChecked());
                 }
                 if (((ItemViewHolder) holder).cb_check.isChecked())
                     ((ItemViewHolder) holder).view_mask.setVisibility(View.VISIBLE);

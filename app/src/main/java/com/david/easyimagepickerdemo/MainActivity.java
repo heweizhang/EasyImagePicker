@@ -3,6 +3,7 @@ package com.david.easyimagepickerdemo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.TextView;
 
 import com.david.easyimagepicker.EasyImagePicker;
 import com.david.easyimagepicker.PickerConfig;
@@ -13,11 +14,13 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private ArrayList<ImageInfo> list = new ArrayList<>();
+    private TextView tv_show_result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        tv_show_result = (TextView)findViewById(R.id.tv_show_result);
         //初始化EasyImagePicker
         PickerConfig config = new PickerConfig.Builder(MainActivity.this, new GlideImageLoader())//传入ImageLoader
 //                .setAnimRes(0)//传入0为不显示动画，不传显示默认动画，用户也可以传入自定义的动画
@@ -38,18 +41,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void openEasyImagePicker() {
 
-        LogUtil.e("info", "list.size():" + list.size());
         //不区分单选多选，传入1即为单选,需要显示初始化已选中图片，需要传入list,或直接传入null
-        EasyImagePicker.getInstance().openPicker(IMAGEPICKERREQUESTCODE, 8, list, new EasyImagePicker.ImagePickerResultCallBack() {
+        EasyImagePicker.getInstance().openPicker(IMAGEPICKERREQUESTCODE,10, list, new EasyImagePicker.ImagePickerResultCallBack() {
             @Override
             public void onHanlderSuccess(int requestCode, ArrayList<ImageInfo> resultList) {
                 if (requestCode == IMAGEPICKERREQUESTCODE) {
                     list.clear();
                     list.addAll(resultList);
-                    LogUtil.e("info", "list.size():" + list.size());
+                    StringBuilder sb = new StringBuilder();
+
                     for (ImageInfo i : resultList) {
-                        LogUtil.e("info", i.toString());
+                        sb.append(i.getImagePath() +"\n");
                     }
+                    tv_show_result.setText(sb.toString());
                 }
             }
 

@@ -1,16 +1,22 @@
 # EasyImagePicker
-网上开源的图片选择器已经很多了，用起来方便，但是直接使用却不利于新手的学习，是不是该尝试着自己写一个？
+网上开源的图片选择器已经很多了，用起来方便，但直接使用却不利于新手的学习，并且用第三方项目你怎么知道哪天会出现一个莫名其妙的bug，是不是该尝试着自己写一个？
 
-#### 先来看看我们的需求：
-1、 项目中需要做一个多图上传的功能，需要用到多图选择器，上传原图，不需要编辑以及压缩
-2、 选择图片后需要可以大图预览
+#### 先来看看我们可能碰到的需求：
+1、 项目中需要做一个多图上传的功能，需要用到多图选择器，上传原图/压缩后，不需要编辑以及压缩 ，可以预览大图
+2、 单选:上传用户头像：大部分的头像功能应该都带两种方式：1、拍照，2、图库选择，用于头像的应该都需要裁剪（圆形裁剪，矩形裁剪），压缩成指定大小
+3、 产品经理脑袋一热，我们平台的图片应该带上自家的水印？这样才是高大上
 
 
-###### 12-21:
-TODO：
+
+###### TODO：
+
 ImageInfo 重写equqls ?
-暂时忽略android6.0以上权限问题
-已完成：使用Loader加载图片资源
+android6.0以上权限问题
+PreViewActivity viewpager 滑动至边界后，图片大小缩放至初始化大小
+PreViewActivity 顶栏问题：设顶栏背景为透明，Activity为全屏，点击时隐藏topBar,状态栏以及bottomBar
+EasyImagePicker如何回收？
+
+
 
 #### 如何使用
 ###### 初始化图片选择器：
@@ -29,6 +35,7 @@ EasyImagePicker.getInstance().init(config);
 
 ###### 调起图片选择器：
 ```
+
  //不区分单选多选，传入1即为单选,需要显示初始化已选中图片，需要传入list,或直接传入null
 EasyImagePicker.getInstance().openPicker(IMAGEPICKERREQUESTCODE, 8, list, new EasyImagePicker.ImagePickerResultCallBack() {
      @Override

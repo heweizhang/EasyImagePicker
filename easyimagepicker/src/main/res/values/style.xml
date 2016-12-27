@@ -5,4 +5,11 @@
         <item name="android:button">@drawable/selector_item_checked</item>
     </style>
 
+    <style name="EasyImagePickerTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:fitsSystemWindows">true</item>
+    </style>
+
+    <style name="EasyImagePickerThemeFullScreen" parent="EasyImagePickerTheme">
+        <item name="android:fitsSystemWindows">false</item>
+    </style>
 </resources>

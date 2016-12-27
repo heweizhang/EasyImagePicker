@@ -30,7 +30,7 @@ public class EasyImagePicker {
 
     private int currentFolderIndex = 0;//默认选中文件夹：全部文件
 
-    private OnImageSelectedChangedListener onImageSelectedChangedListener;//图片选中情况回调
+    private List<OnImageSelectedChangedListener> onImageSelectedChangedListenerList = new ArrayList<>();//图片选中情况回调集合，多处需要此回调，不用集合会导致监听被覆盖
 
     public int getImagePickRequestCode() {
         return imagePickRequestCode;
@@ -92,7 +92,7 @@ public class EasyImagePicker {
         if (null != selectedImagesList) {
             if (selectedImagesList.size() > multipleLimit) {
                 LogUtil.e(getPickerConfig().getLog(), "the input selectedImagesList.size() must not less than multipleLimit");
-            } else{
+            } else {
                 this.selectedImagesList.clear();
                 this.selectedImagesList.addAll(selectedImagesList);
                 LogUtil.e(getPickerConfig().getLog(), "the selectedImagesList init succeed" + selectedImagesList.size());
@@ -118,13 +118,15 @@ public class EasyImagePicker {
         this.currentFolderIndex = currentFolderIndex;
     }
 
-    public void addSelectedImagesList(int position, ImageInfo item, boolean isAdd) {
+    public void addSelectedImagesList(ImageInfo item, boolean isAdd) {
         if (isAdd)
             selectedImagesList.add(item);
         else
             selectedImagesList.remove(item);
-        if (onImageSelectedChangedListener != null) {
-            onImageSelectedChangedListener.onImageSelectedChanged();
+        if (onImageSelectedChangedListenerList != null && onImageSelectedChangedListenerList.size() != 0) {
+            for (OnImageSelectedChangedListener listener : onImageSelectedChangedListenerList) {
+                listener.onImageSelectedChanged();
+            }
         }
     }
 
@@ -142,7 +144,7 @@ public class EasyImagePicker {
     }
 
     public void setImageSelectedChangedListener(OnImageSelectedChangedListener onImageSelectedChangedListener) {
-        this.onImageSelectedChangedListener = onImageSelectedChangedListener;
+        this.onImageSelectedChangedListenerList.add(onImageSelectedChangedListener);
     }
 
     /**

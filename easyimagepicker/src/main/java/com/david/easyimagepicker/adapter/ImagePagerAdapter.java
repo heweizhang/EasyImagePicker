@@ -28,8 +28,9 @@ public class ImagePagerAdapter extends PagerAdapter {
     private Activity activity;
     private int screenWidth;
     private int screenHeight;
+    private PhotoViewOnClick onClickListener;
 
-    public ImagePagerAdapter( Activity activity,ArrayList<ImageInfo> images) {
+    public ImagePagerAdapter(Activity activity, ArrayList<ImageInfo> images) {
         this.images = images;
         this.activity = activity;
         this.imageLoader = EasyImagePicker.getInstance().getPickerConfig().getImageLoader();
@@ -41,11 +42,13 @@ public class ImagePagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         PhotoView photoView = new PhotoView(activity);
         ImageInfo imageBean = images.get(position);
-        imageLoader.displayImage(activity,imageBean.getImagePath(),photoView, screenWidth,screenHeight);
+        imageLoader.displayImage(activity, imageBean.getImagePath(), photoView, screenWidth, screenHeight);
         photoView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
             @Override
             public void onPhotoTap(View view, float x, float y) {
-
+                if(onClickListener != null){
+                    onClickListener.photoViewOnClickListener();
+                }
             }
         });
         container.addView(photoView);
@@ -59,7 +62,7 @@ public class ImagePagerAdapter extends PagerAdapter {
 
     @Override
     public int getItemPosition(Object object) {
-        LogUtil.e(EasyImagePicker.getInstance().getPickerConfig().getLog()," getItemPosition" );
+        LogUtil.e(EasyImagePicker.getInstance().getPickerConfig().getLog(), " getItemPosition");
         return POSITION_NONE;
     }
 
@@ -72,5 +75,13 @@ public class ImagePagerAdapter extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((View) object);
+    }
+
+    public void setPhotoViewOnClickListener(PhotoViewOnClick onClickListener){
+        this.onClickListener = onClickListener;
+    }
+
+    public interface PhotoViewOnClick{
+        void photoViewOnClickListener();
     }
 }

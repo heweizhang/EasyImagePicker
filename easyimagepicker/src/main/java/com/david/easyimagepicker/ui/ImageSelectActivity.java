@@ -31,6 +31,7 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
     private FolderPopWindow folderPopWindow;
     private ImageGridAdapter adapter;
     private FolderListAdapter foldersAdapter;
+    private final int REQUEST_GO_PREVIEW = 1111;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +71,16 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
                 intent.putExtra("folderIndex", EasyImagePicker.getInstance().getCurrentFolderIndex());//当前选中文件夹
                 intent.putExtra("currentPos", pos);//当前item位置
 
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_GO_PREVIEW);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == REQUEST_GO_PREVIEW && adapter != null)
+            adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -154,5 +162,6 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
         super.onDestroy();
         //TODO 如何回收内存
         EasyImagePicker.getInstance().getSelectedImagesList().clear();
+        EasyImagePicker.getInstance().setCurrentFolderIndex(0);
     }
 }
