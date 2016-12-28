@@ -61,7 +61,12 @@ public class ImagePreViewActivity extends BaseImageActivity implements EasyImage
 
         if (getIntent() != null) {
             currentPos = getIntent().getIntExtra("currentPos", 0);
-            imageInfos = imagePicker.getImageFolderList().get(getIntent().getIntExtra("folderIndex", 0)).getImageInfoList();
+            imageInfos = (ArrayList<ImageInfo>) getIntent().getSerializableExtra("images");
+            if(imageInfos == null){
+               LogUtil.e( imagePicker.getPickerConfig().getLog(),"---------------传入数据为空--------------");
+                finish();
+                return;
+            }
             tv_index.setText((currentPos + 1) + "/" + imageInfos.size());
             setCheckBoxStatus(currentPos);
             pagerAdapter = new ImagePagerAdapter(this, imageInfos);
@@ -69,6 +74,7 @@ public class ImagePreViewActivity extends BaseImageActivity implements EasyImage
             view_pager.setCurrentItem(currentPos);
         } else {
             finish();
+            return;
         }
         initListener();
         onImageSelectedChanged();

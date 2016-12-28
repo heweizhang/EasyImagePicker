@@ -32,21 +32,22 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
     private ImageGridAdapter adapter;
     private FolderListAdapter foldersAdapter;
     private final int REQUEST_GO_PREVIEW = 1111;
+    private EasyImagePicker imagePicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_imageselect);
-
+        imagePicker = EasyImagePicker.getInstance();
         initView();
 
         new ImageSourceHelper(this, null, this);//TODO: 获取所有图片资源，读取速度非常快，不算耗时操作，因此直接在主线程中获取
-        EasyImagePicker.getInstance().setImageSelectedChangedListener(this);//设置图片选中未选中回调
+        imagePicker.setImageSelectedChangedListener(this);//设置图片选中未选中回调
     }
 
     private void initView() {
         rv_photoviews = (RecyclerView) findViewById(R.id.rv_photoviews);
-        GridLayoutManager layoutManager = new GridLayoutManager(this, EasyImagePicker.getInstance().getPickerConfig().getImageWidthSize());
+        GridLayoutManager layoutManager = new GridLayoutManager(this, imagePicker.getPickerConfig().getImageWidthSize());
         rv_photoviews.setLayoutManager(layoutManager);
         adapter = new ImageGridAdapter(this, null);
         rv_photoviews.setAdapter(adapter);
@@ -68,7 +69,7 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
             @Override
             public void onItemClick(int pos) {
                 Intent intent = new Intent(ImageSelectActivity.this, ImagePreViewActivity.class);
-                intent.putExtra("folderIndex", EasyImagePicker.getInstance().getCurrentFolderIndex());//当前选中文件夹
+                intent.putExtra("images", imagePicker.getImageFolderList().get(imagePicker.getCurrentFolderIndex()));//当前选中文件夹
                 intent.putExtra("currentPos", pos);//当前item位置
 
                 startActivityForResult(intent, REQUEST_GO_PREVIEW);
@@ -86,7 +87,7 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
     @Override
     public void onImagesLoaded() {
         //设置数据
-        adapter.setImages(EasyImagePicker.getInstance().getImageFolderList().get(0).getImageInfoList());//默认第一个文件夹即：全部图片
+        adapter.setImages(imagePicker.getImageFolderList().get(0).getImageInfoList());//默认第一个文件夹即：全部图片
         adapter.notifyDataSetChanged();
     }
 
@@ -108,16 +109,20 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
             }
 
         } else if (id == R.id.btn_preview) {
+            Intent intent = new Intent(ImageSelectActivity.this, ImagePreViewActivity.class);
+            intent.putExtra("images", imagePicker.getSelectedImagesList());//预览已选中文件
+            intent.putExtra("currentPos", 0);//当前item位置
 
+            startActivityForResult(intent, REQUEST_GO_PREVIEW);
         } else if (id == R.id.btn_back) {
             finish();
         } else if (id == R.id.btn_ok) {
-            LogUtil.e(EasyImagePicker.getInstance().getPickerConfig().getLog(), "btn_ok");
-            if (EasyImagePicker.getInstance().getResultCallBackListener() != null) {
-                EasyImagePicker.getInstance().getResultCallBackListener().onHanlderSuccess(EasyImagePicker.getInstance().getImagePickRequestCode(), EasyImagePicker.getInstance().getSelectedImagesList());
+            LogUtil.e(imagePicker.getPickerConfig().getLog(), "btn_ok");
+            if (imagePicker.getResultCallBackListener() != null) {
+                imagePicker.getResultCallBackListener().onHanlderSuccess(imagePicker.getImagePickRequestCode(), imagePicker.getSelectedImagesList());
                 finish();
             } else
-                LogUtil.e(EasyImagePicker.getInstance().getPickerConfig().getLog(), "--------------- 未设置回调 ----------------");
+                LogUtil.e(imagePicker.getPickerConfig().getLog(), "--------------- 未设置回调 ----------------");
         }
 
 
@@ -129,15 +134,15 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
     private void initPop() {
         folderPopWindow = new FolderPopWindow(ImageSelectActivity.this, foldersAdapter);
 
-        foldersAdapter.setImageFolders(EasyImagePicker.getInstance().getImageFolderList());
+        foldersAdapter.setImageFolders(imagePicker.getImageFolderList());
         foldersAdapter.notifyDataSetChanged();
         foldersAdapter.setOnItemClickListener(new FolderListAdapter.CustomItemOnClick() {
             @Override
             public void onItemClick(int pos) {
                 foldersAdapter.setCurrentFolderIndex(pos);
-                adapter.setImages(EasyImagePicker.getInstance().getImageFolderList().get(pos).getImageInfoList());
+                adapter.setImages(imagePicker.getImageFolderList().get(pos).getImageInfoList());
                 adapter.notifyDataSetChanged();
-                btn_dir.setText(EasyImagePicker.getInstance().getImageFolderList().get(pos).getName());
+                btn_dir.setText(imagePicker.getImageFolderList().get(pos).getName());
                 if (folderPopWindow != null && folderPopWindow.isShowing()) {
                     folderPopWindow.dismiss();
                 }
@@ -148,12 +153,12 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
 
     @Override
     public void onImageSelectedChanged() {
-        btn_ok.setText("完成(" + EasyImagePicker.getInstance().getSelectedImagesList().size() + "/" + EasyImagePicker.getInstance().getMultipleLimit() + ")");
-        if (EasyImagePicker.getInstance().getSelectedImagesList().size() == 0) {
+        btn_ok.setText("完成(" + imagePicker.getSelectedImagesList().size() + "/" + imagePicker.getMultipleLimit() + ")");
+        if (imagePicker.getSelectedImagesList().size() == 0) {
             btn_preview.setVisibility(View.GONE);
         } else {
             btn_preview.setVisibility(View.VISIBLE);
-            btn_preview.setText("预览(" + EasyImagePicker.getInstance().getSelectedImagesList().size() + ")");
+            btn_preview.setText("预览(" + imagePicker.getSelectedImagesList().size() + ")");
         }
     }
 
@@ -161,7 +166,7 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
     protected void onDestroy() {
         super.onDestroy();
         //TODO 如何回收内存
-        EasyImagePicker.getInstance().getSelectedImagesList().clear();
-        EasyImagePicker.getInstance().setCurrentFolderIndex(0);
+        imagePicker.getSelectedImagesList().clear();
+        imagePicker.setCurrentFolderIndex(0);
     }
 }
