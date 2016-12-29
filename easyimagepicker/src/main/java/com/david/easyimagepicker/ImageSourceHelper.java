@@ -127,7 +127,8 @@ public class ImageSourceHelper implements LoaderManager.LoaderCallbacks<Cursor> 
             //将数据存到内存中
             EasyImagePicker.getInstance().setImageFolderList(imageFolders);
             //完成加载任务，开始回调,不需要传任何东西，因为我们可以通过 EasyImagePicker.getInstance().getImageFolderList();
-            imagesLoaderListener.onImagesLoaded();
+            if (imagesLoaderListener != null)
+                imagesLoaderListener.onImagesLoaded();
         }
     }
 

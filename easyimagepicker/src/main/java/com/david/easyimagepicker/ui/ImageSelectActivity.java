@@ -1,13 +1,16 @@
 package com.david.easyimagepicker.ui;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.david.easyimagepicker.BaseImageActivity;
 import com.david.easyimagepicker.EasyImagePicker;
@@ -21,18 +24,21 @@ import com.david.easyimagepicker.view.FolderPopWindow;
 
 /**
  * Created by david on 2016/12/21.
- * GitHub:
+ * GitHub:https://github.com/HeweiZhang/EasyImagePicker
+ * email:17505926606@163.com
  */
 
 public class ImageSelectActivity extends BaseImageActivity implements ImageSourceHelper.ImagesLoaderListener, View.OnClickListener, EasyImagePicker.OnImageSelectedChangedListener {
     private RecyclerView rv_photoviews;
     private Button btn_preview, btn_ok, btn_dir;
-    private RelativeLayout footer_bar;
+    private RelativeLayout footer_bar,topbar;
     private FolderPopWindow folderPopWindow;
     private ImageGridAdapter adapter;
     private FolderListAdapter foldersAdapter;
     private final int REQUEST_GO_PREVIEW = 1111;
     private EasyImagePicker imagePicker;
+    private TextView image_loading,tv_des;
+    private ImageView btn_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +46,14 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
         setContentView(R.layout.activity_imageselect);
         imagePicker = EasyImagePicker.getInstance();
         initView();
+        setPickerTheme();
 
         new ImageSourceHelper(this, null, this);//TODO: 获取所有图片资源，读取速度非常快，不算耗时操作，因此直接在主线程中获取
         imagePicker.setImageSelectedChangedListener(this);//设置图片选中未选中回调
     }
 
     private void initView() {
+
         rv_photoviews = (RecyclerView) findViewById(R.id.rv_photoviews);
         GridLayoutManager layoutManager = new GridLayoutManager(this, imagePicker.getPickerConfig().getImageWidthSize());
         rv_photoviews.setLayoutManager(layoutManager);
@@ -56,7 +64,11 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
         btn_preview = (Button) findViewById(R.id.btn_preview);
         btn_dir = (Button) findViewById(R.id.btn_dir);
         btn_ok = (Button) findViewById(R.id.btn_ok);
+        btn_back = (ImageView)findViewById(R.id.btn_back);
         footer_bar = (RelativeLayout) findViewById(R.id.footer_bar);
+        topbar = (RelativeLayout) findViewById(R.id.rl_topbar);
+        image_loading = (TextView) findViewById(R.id.tv_image_loading);
+        tv_des = (TextView) findViewById(R.id.tv_des);
 
         onImageSelectedChanged();
 
@@ -83,11 +95,38 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
             adapter.notifyDataSetChanged();
     }
 
+    /**
+     * 图片信息加载完成
+     */
     @Override
     public void onImagesLoaded() {
-        //设置数据
-        adapter.setImages(imagePicker.getImageFolderList().get(0).getImageInfoList());//默认第一个文件夹即：全部图片
-        adapter.notifyDataSetChanged();
+        if(imagePicker.getImageFolderList() != null && imagePicker.getImageFolderList().size() != 0){
+            image_loading.setVisibility(View.GONE);
+            //设置数据
+            adapter.setImages(imagePicker.getImageFolderList().get(0).getImageInfoList());//默认第一个文件夹即：全部图片
+            adapter.notifyDataSetChanged();
+        }else{
+            image_loading.setText("抱歉，没有找到照片~");
+        }
+    }
+
+    /**
+     * 根据配置设置主题
+     * //TODO
+     */
+    private void setPickerTheme(){
+        btn_back.setImageResource(imagePicker.getPickerConfig().getPickerThmeConfig().getBackBtnIcon());
+
+        tv_des.setTextColor(imagePicker.getPickerConfig().getPickerThmeConfig().getTextColor());
+        btn_ok.setTextColor(imagePicker.getPickerConfig().getPickerThmeConfig().getTextColor());
+        btn_preview.setTextColor(imagePicker.getPickerConfig().getPickerThmeConfig().getTextColor());
+        btn_dir.setTextColor(imagePicker.getPickerConfig().getPickerThmeConfig().getTextColor());
+
+        topbar.setBackgroundResource(imagePicker.getPickerConfig().getPickerThmeConfig().getTopBarBgColor());
+
+        btn_back.setBackgroundResource(imagePicker.getPickerConfig().getPickerThmeConfig().getBackBtnBg());
+        btn_ok.setBackgroundResource(imagePicker.getPickerConfig().getPickerThmeConfig().getOkBtnBg());
+
     }
 
     @Override
@@ -101,8 +140,6 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
             if (folderPopWindow != null && !folderPopWindow.isShowing()) {
                 int[] location = new int[2];
                 footer_bar.getLocationOnScreen(location);
-                LogUtil.e("info", "footer_bar:" + location[0]);
-                LogUtil.e("info", "footer_bar:" + location[1]);
                 folderPopWindow.showAtLocation(footer_bar, Gravity.NO_GRAVITY, 0,
                         0);
             }

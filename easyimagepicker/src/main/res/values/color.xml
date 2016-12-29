@@ -4,4 +4,5 @@
     <color name="theme_color_footbar">#dc22292c</color>
     <color name="white">#FFFFFF</color>
     <color name="transparent">#00000000</color>
+    <color name="testColor">#e7b10d</color>
 </resources>

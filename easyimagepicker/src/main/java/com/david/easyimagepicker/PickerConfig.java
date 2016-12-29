@@ -13,6 +13,7 @@ import com.david.easyimagepicker.imageloader.ImageLoader;
 public class PickerConfig {
 
     private Context context;
+    private PickerThmeConfig pickerThmeConfig;
     private ImageLoader imageLoader;//外部传入图片加载器
     private int imageWidthSize;//gridview显示图片列数,默认为3
     private int animRes;//动画效果:禁止动画请传入0
@@ -24,6 +25,11 @@ public class PickerConfig {
         this.imageWidthSize = builder.imageWidthSize;
         this.animRes = builder.animRes;
         this.log = builder.log;
+        this.pickerThmeConfig = builder.pickerThmeConfig;
+    }
+
+    public PickerThmeConfig getPickerThmeConfig() {
+        return pickerThmeConfig;
     }
 
     public String getLog() {
@@ -56,11 +62,17 @@ public class PickerConfig {
         private int imageWidthSize = 3;//gridview显示图片列数
         private int animRes = R.anim.gf_flip_horizontal_in;
         private String log = "easyimagepicker";//log tag,传入null 为不打印
+        private PickerThmeConfig pickerThmeConfig = new PickerThmeConfig.Builder().build();
 
 
         public Builder(Context context, ImageLoader imageLoader) {
             this.context = context;
             this.imageLoader = imageLoader;
+        }
+
+        public Builder setPickerThmeConfig(PickerThmeConfig pickerThmeConfig) {
+            this.pickerThmeConfig = pickerThmeConfig;
+            return this;
         }
 
         public Builder setLog(String tag) {

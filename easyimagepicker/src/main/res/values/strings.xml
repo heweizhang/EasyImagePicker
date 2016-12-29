@@ -11,4 +11,5 @@
     <string name="photo_crop">图片裁剪</string>
     <string name="origin">原图</string>
     <string name="origin_size">原图(%1$s)</string>
+    <string name="image_loading">图片加载中...</string>
 </resources>
