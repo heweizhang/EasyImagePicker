@@ -69,9 +69,8 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
             @Override
             public void onItemClick(int pos) {
                 Intent intent = new Intent(ImageSelectActivity.this, ImagePreViewActivity.class);
-                intent.putExtra("images", imagePicker.getImageFolderList().get(imagePicker.getCurrentFolderIndex()));//当前选中文件夹
+                intent.putExtra("images", imagePicker.getImageFolderList().get(imagePicker.getCurrentFolderIndex()).getImageInfoList());//当前选中文件夹
                 intent.putExtra("currentPos", pos);//当前item位置
-
                 startActivityForResult(intent, REQUEST_GO_PREVIEW);
             }
         });
@@ -112,7 +111,6 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
             Intent intent = new Intent(ImageSelectActivity.this, ImagePreViewActivity.class);
             intent.putExtra("images", imagePicker.getSelectedImagesList());//预览已选中文件
             intent.putExtra("currentPos", 0);//当前item位置
-
             startActivityForResult(intent, REQUEST_GO_PREVIEW);
         } else if (id == R.id.btn_back) {
             finish();
