@@ -25,6 +25,10 @@ public class PickerThmeConfig {
         this.bottomBarBgColor = builder.bottomBarBgColor;
     }
 
+    public int getBottomBarBgColor() {
+        return bottomBarBgColor;
+    }
+
     public int getTextColor() {
         return textColor;
     }

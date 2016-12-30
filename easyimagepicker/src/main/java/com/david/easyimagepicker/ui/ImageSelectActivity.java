@@ -112,7 +112,6 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
 
     /**
      * 根据配置设置主题
-     * //TODO
      */
     private void setPickerTheme(){
         btn_back.setImageResource(imagePicker.getPickerConfig().getPickerThmeConfig().getBackBtnIcon());
@@ -123,6 +122,7 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
         btn_dir.setTextColor(imagePicker.getPickerConfig().getPickerThmeConfig().getTextColor());
 
         topbar.setBackgroundResource(imagePicker.getPickerConfig().getPickerThmeConfig().getTopBarBgColor());
+        footer_bar.setBackgroundResource(imagePicker.getPickerConfig().getPickerThmeConfig().getBottomBarBgColor());
 
         btn_back.setBackgroundResource(imagePicker.getPickerConfig().getPickerThmeConfig().getBackBtnBg());
         btn_ok.setBackgroundResource(imagePicker.getPickerConfig().getPickerThmeConfig().getOkBtnBg());
