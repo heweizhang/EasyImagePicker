@@ -10,31 +10,31 @@ import android.graphics.Color;
 public class PickerThmeConfig {
 
     private int textColor;//文字颜色
-    private int topBarBgColor;//顶部标题栏背景颜色
-    private int bottomBarBgColor;//bottomBar背景默认颜色
+    private int titleBarBgColor;//顶部标题栏背景颜色
     private int backBtnIcon;//标题栏返回按钮图标
     private int backBtnBg;//标题栏返回按钮图标背景
     private int okBtnBg;//标题栏完成按钮图标背景
+    private int partingLineColor;//标题分竖直割线颜色
 
     private PickerThmeConfig(Builder builder) {
         this.textColor = builder.textColor;
-        this.topBarBgColor = builder.topBarBgColor;
+        this.titleBarBgColor = builder.titleBarBgColor;
         this.backBtnIcon = builder.backBtnIcon;
         this.backBtnBg = builder.backBtnBg;
         this.okBtnBg = builder.okBtnBg;
-        this.bottomBarBgColor = builder.bottomBarBgColor;
-    }
-
-    public int getBottomBarBgColor() {
-        return bottomBarBgColor;
+        this.partingLineColor = builder.partingLineColor;
     }
 
     public int getTextColor() {
         return textColor;
     }
 
-    public int getTopBarBgColor() {
-        return topBarBgColor;
+    public int getTitleBarBgColor() {
+        return titleBarBgColor;
+    }
+
+    public int getPartingLineColor() {
+        return partingLineColor;
     }
 
     public int getBackBtnIcon() {
@@ -56,24 +56,24 @@ public class PickerThmeConfig {
         }
 
         private int textColor = Color.parseColor("#FFFFFF");//文字颜色
-        private int topBarBgColor = R.color.theme_color;//顶部标题栏背景默认颜色
-        private int bottomBarBgColor = R.color.theme_color_footbar;//bottomBar背景默认颜色
+        private int titleBarBgColor = R.color.theme_color;//顶部标题栏背景默认颜色
         private int backBtnIcon = R.drawable.ic_back;//标题栏返回按钮图标
         private int backBtnBg = R.drawable.selector_image_select_back;//标题栏返回按钮图标背景
         private int okBtnBg = R.drawable.selector_image_ok;//标题完栏成按钮图标背景
+        private int partingLineColor = R.color.partinLine;//标题分竖直割线颜色
 
         public Builder setTextColor(int textColor) {
             this.textColor = textColor;
             return this;
         }
 
-        public Builder setTopBarBgColor(int topBarBgColor) {
-            this.topBarBgColor = topBarBgColor;
+        public Builder setTitleBarBgColor(int titleBarBgColor) {
+            this.titleBarBgColor = titleBarBgColor;
             return this;
         }
 
-        public Builder setBottomBarBgColor(int bottomBarBgColor) {
-            this.bottomBarBgColor = bottomBarBgColor;
+        public Builder setPartingLineColor(int partingLineColor) {
+            this.partingLineColor = partingLineColor;
             return this;
         }
 

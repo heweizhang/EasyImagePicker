@@ -1,7 +1,6 @@
 package com.david.easyimagepicker.ui;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.david.easyimagepicker.BaseImageActivity;
 import com.david.easyimagepicker.EasyImagePicker;
 import com.david.easyimagepicker.ImageSourceHelper;
 import com.david.easyimagepicker.R;
@@ -39,6 +37,7 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
     private EasyImagePicker imagePicker;
     private TextView image_loading,tv_des;
     private ImageView btn_back;
+    private View partingLine,partingBottomLine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +68,8 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
         topbar = (RelativeLayout) findViewById(R.id.rl_topbar);
         image_loading = (TextView) findViewById(R.id.tv_image_loading);
         tv_des = (TextView) findViewById(R.id.tv_des);
+        partingLine = (View)findViewById(R.id.parting_line);
+        partingBottomLine = (View)findViewById(R.id.parting_bottom_line);
 
         onImageSelectedChanged();
 
@@ -121,12 +122,14 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
         btn_preview.setTextColor(imagePicker.getPickerConfig().getPickerThmeConfig().getTextColor());
         btn_dir.setTextColor(imagePicker.getPickerConfig().getPickerThmeConfig().getTextColor());
 
-        topbar.setBackgroundResource(imagePicker.getPickerConfig().getPickerThmeConfig().getTopBarBgColor());
-        footer_bar.setBackgroundResource(imagePicker.getPickerConfig().getPickerThmeConfig().getBottomBarBgColor());
+        topbar.setBackgroundResource(imagePicker.getPickerConfig().getPickerThmeConfig().getTitleBarBgColor());
+        footer_bar.setBackgroundResource(imagePicker.getPickerConfig().getPickerThmeConfig().getTitleBarBgColor());
 
         btn_back.setBackgroundResource(imagePicker.getPickerConfig().getPickerThmeConfig().getBackBtnBg());
         btn_ok.setBackgroundResource(imagePicker.getPickerConfig().getPickerThmeConfig().getOkBtnBg());
 
+        partingLine.setBackgroundColor(imagePicker.getPickerConfig().getPickerThmeConfig().getPartingLineColor());
+        partingBottomLine.setBackgroundColor(imagePicker.getPickerConfig().getPickerThmeConfig().getPartingLineColor());
     }
 
     @Override

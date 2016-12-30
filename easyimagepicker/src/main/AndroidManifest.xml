@@ -12,10 +12,12 @@
         <activity
             android:name=".ui.ImageSelectActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
+            android:theme="@style/EasyImagePickerTheme"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.ImagePreViewActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
+            android:theme="@style/EasyImagePickerThemeFullScreen"
             android:screenOrientation="portrait" />
     </application>
 

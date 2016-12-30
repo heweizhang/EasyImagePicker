@@ -3,7 +3,7 @@
     android:id="@+id/rl_topbar"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:background="#cc22292c">
+    android:background="@color/theme_color">
 
     <ImageView
         android:id="@+id/btn_back"
@@ -15,6 +15,7 @@
         android:src="@drawable/ic_back" />
 
     <View
+        android:id="@+id/parting_line"
         android:layout_width="1px"
         android:layout_height="match_parent"
         android:layout_marginBottom="12dp"

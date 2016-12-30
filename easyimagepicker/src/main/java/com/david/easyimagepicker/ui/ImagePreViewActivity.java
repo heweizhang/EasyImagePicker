@@ -1,14 +1,11 @@
 package com.david.easyimagepicker.ui;
 
-import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -17,12 +14,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.david.easyimagepicker.BaseImageActivity;
 import com.david.easyimagepicker.EasyImagePicker;
 import com.david.easyimagepicker.R;
 import com.david.easyimagepicker.adapter.ImagePagerAdapter;
 import com.david.easyimagepicker.entity.ImageInfo;
 import com.david.easyimagepicker.util.LogUtil;
+import com.david.easyimagepicker.util.PixelUtil;
 import com.david.easyimagepicker.view.ViewPagerFixed;
 
 import java.util.ArrayList;
@@ -42,6 +39,7 @@ public class ImagePreViewActivity extends BaseImageActivity implements EasyImage
     private ImageView btn_back;
     private LinearLayout topBar, bottomBar;
     private RelativeLayout view_root;
+    private View partingLine;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,12 +56,13 @@ public class ImagePreViewActivity extends BaseImageActivity implements EasyImage
         btn_back = (ImageView) findViewById(R.id.btn_back);
         topBar = (LinearLayout) findViewById(R.id.ll_topbar);
         bottomBar = (LinearLayout) findViewById(R.id.ll_bottombar);
+        partingLine = (View) findViewById(R.id.parting_line);
 
         if (getIntent() != null) {
             currentPos = getIntent().getIntExtra("currentPos", 0);
             imageInfos = (ArrayList<ImageInfo>) getIntent().getSerializableExtra("images");
-            if(imageInfos == null){
-               LogUtil.e( imagePicker.getPickerConfig().getLog(),"---------------传入数据为空--------------");
+            if (imageInfos == null) {
+                LogUtil.e(imagePicker.getPickerConfig().getLog(), "---------------传入数据为空--------------");
                 finish();
                 return;
             }
@@ -76,8 +75,24 @@ public class ImagePreViewActivity extends BaseImageActivity implements EasyImage
             finish();
             return;
         }
+        //因为状态栏透明后，布局整体会上移，所以给头部加上状态栏的margin值，保证头部不会被覆盖
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) topBar.getLayoutParams();
+            params.topMargin = PixelUtil.getStatusHeight(this);
+            topBar.setLayoutParams(params);
+        }
+        setTheme();
         initListener();
         onImageSelectedChanged();
+    }
+
+    private void setTheme() {
+
+        topBar.setBackgroundResource(imagePicker.getPickerConfig().getPickerThmeConfig().getTitleBarBgColor());
+        bottomBar.setBackgroundResource(imagePicker.getPickerConfig().getPickerThmeConfig().getTitleBarBgColor());
+        partingLine.setBackgroundColor(imagePicker.getPickerConfig().getPickerThmeConfig().getPartingLineColor());
+
     }
 
     private void initListener() {
@@ -135,42 +150,30 @@ public class ImagePreViewActivity extends BaseImageActivity implements EasyImage
     //点击图片，将topBar跟bottomBar隐藏或显示
     private void showOrHideBars() {
         if (topBar.getVisibility() == View.VISIBLE) {
-            topBar.setAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_out));
+//            topBar.setAnimation(AnimationUtils.loadAnimation(this, R.anim.top_out));
             bottomBar.setAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_out));
             topBar.setVisibility(View.GONE);
             bottomBar.setVisibility(View.GONE);
-//            tintManager.setStatusBarTintResource(R.color.transparent);//通知栏所需颜色
+            tintManager.setStatusBarTintResource(R.color.transparent);//通知栏所需颜色
             //给最外层布局加上这个属性表示，Activity全屏显示，且状态栏被隐藏覆盖掉。
-/*            if (Build.VERSION.SDK_INT >= 16)
-                view_root.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);*/
+            if (Build.VERSION.SDK_INT >= 16)
+                view_root.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
 
 
         } else {
-            topBar.setAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_in));
+//            topBar.setAnimation(AnimationUtils.loadAnimation(this, R.anim.top_in));
             bottomBar.setAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_in));
             topBar.setVisibility(View.VISIBLE);
             bottomBar.setVisibility(View.VISIBLE);
-//            tintManager.setStatusBarTintResource(R.color.status_bar);//通知栏所需颜色
+
+            tintManager.setStatusBarTintResource(EasyImagePicker.getInstance().getPickerConfig().getPickerThmeConfig().getTitleBarBgColor());//通知栏所需颜色
             //Activity全屏显示，但状态栏不会被隐藏覆盖，状态栏依然可见，Activity顶端布局部分会被状态遮住
-/*            if (Build.VERSION.SDK_INT >= 16)
-                view_root.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);*/
+            if (Build.VERSION.SDK_INT >= 16)
+                view_root.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
 
     }
 
-    /**
-     * 使状态栏透明 * <p> * 适用于图片作为背景的界面,此时需要图片填充到状态栏 * * @param activity 需要设置的activity
-     */
-    public static void setTranslucent(Activity activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            // 设置状态栏透明
-            activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            // 设置根布局的参数
-            ViewGroup rootView = (ViewGroup) ((ViewGroup) activity.findViewById(android.R.id.content)).getChildAt(0);
-            rootView.setFitsSystemWindows(true);
-            rootView.setClipToPadding(true);
-        }
-    }
 
     private void setCheckBoxStatus(int index) {
         tv_index.setText((index + 1) + "/" + imageInfos.size());

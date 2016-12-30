@@ -5,4 +5,5 @@
     <color name="white">#FFFFFF</color>
     <color name="transparent">#00000000</color>
     <color name="testColor">#e7b10d</color>
+    <color name="partinLine">#cc111111</color>
 </resources>
