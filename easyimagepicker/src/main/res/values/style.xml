@@ -12,4 +12,12 @@
     <style name="EasyImagePickerThemeFullScreen" parent="EasyImagePickerTheme">
         <item name="android:fitsSystemWindows">false</item>
     </style>
+
+    <!--folders pop 动画样式-->
+    <style name="folders_pop_anim">
+        <item name="android:windowEnterAnimation">@anim/pop_enter_anim</item>
+        <item name="android:windowExitAnimation">@anim/pop_exist_anim</item>
+
+    </style>
 </resources>
+

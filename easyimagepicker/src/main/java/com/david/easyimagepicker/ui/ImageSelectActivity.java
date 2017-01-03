@@ -22,22 +22,22 @@ import com.david.easyimagepicker.view.FolderPopWindow;
 
 /**
  * Created by david on 2016/12/21.
- * GitHub:https://github.com/HeweiZhang/EasyImagePicker
+ * GitHub:https://github.com/heweizhang/EasyImagePicker
  * email:17505926606@163.com
  */
 
 public class ImageSelectActivity extends BaseImageActivity implements ImageSourceHelper.ImagesLoaderListener, View.OnClickListener, EasyImagePicker.OnImageSelectedChangedListener {
     private RecyclerView rv_photoviews;
     private Button btn_preview, btn_ok, btn_dir;
-    private RelativeLayout footer_bar,topbar;
+    private RelativeLayout footer_bar, topbar;
     private FolderPopWindow folderPopWindow;
     private ImageGridAdapter adapter;
     private FolderListAdapter foldersAdapter;
     private final int REQUEST_GO_PREVIEW = 1111;
     private EasyImagePicker imagePicker;
-    private TextView image_loading,tv_des;
+    private TextView image_loading, tv_des;
     private ImageView btn_back;
-    private View partingLine,partingBottomLine;
+    private View partingLine, partingBottomLine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,13 +63,13 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
         btn_preview = (Button) findViewById(R.id.btn_preview);
         btn_dir = (Button) findViewById(R.id.btn_dir);
         btn_ok = (Button) findViewById(R.id.btn_ok);
-        btn_back = (ImageView)findViewById(R.id.btn_back);
+        btn_back = (ImageView) findViewById(R.id.btn_back);
         footer_bar = (RelativeLayout) findViewById(R.id.footer_bar);
         topbar = (RelativeLayout) findViewById(R.id.rl_topbar);
         image_loading = (TextView) findViewById(R.id.tv_image_loading);
         tv_des = (TextView) findViewById(R.id.tv_des);
-        partingLine = (View)findViewById(R.id.parting_line);
-        partingBottomLine = (View)findViewById(R.id.parting_bottom_line);
+        partingLine = (View) findViewById(R.id.parting_line);
+        partingBottomLine = (View) findViewById(R.id.parting_bottom_line);
 
         onImageSelectedChanged();
 
@@ -101,12 +101,12 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
      */
     @Override
     public void onImagesLoaded() {
-        if(imagePicker.getImageFolderList() != null && imagePicker.getImageFolderList().size() != 0){
+        if (imagePicker.getImageFolderList() != null && imagePicker.getImageFolderList().size() != 0) {
             image_loading.setVisibility(View.GONE);
             //设置数据
             adapter.setImages(imagePicker.getImageFolderList().get(0).getImageInfoList());//默认第一个文件夹即：全部图片
             adapter.notifyDataSetChanged();
-        }else{
+        } else {
             image_loading.setText("抱歉，没有找到照片~");
         }
     }
@@ -114,7 +114,7 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
     /**
      * 根据配置设置主题
      */
-    private void setPickerTheme(){
+    private void setPickerTheme() {
         btn_back.setImageResource(imagePicker.getPickerConfig().getPickerThmeConfig().getBackBtnIcon());
 
         tv_des.setTextColor(imagePicker.getPickerConfig().getPickerThmeConfig().getTextColor());
@@ -141,10 +141,7 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
                 isFirstInitPop = true;
             }
             if (folderPopWindow != null && !folderPopWindow.isShowing()) {
-                int[] location = new int[2];
-                footer_bar.getLocationOnScreen(location);
-                folderPopWindow.showAtLocation(footer_bar, Gravity.NO_GRAVITY, 0,
-                        0);
+                folderPopWindow.showAtLocation(footer_bar, Gravity.NO_GRAVITY, 0, 300);
             }
 
         } else if (id == R.id.btn_preview) {
@@ -155,15 +152,12 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
         } else if (id == R.id.btn_back) {
             finish();
         } else if (id == R.id.btn_ok) {
-            LogUtil.e(imagePicker.getPickerConfig().getLog(), "btn_ok");
             if (imagePicker.getResultCallBackListener() != null) {
                 imagePicker.getResultCallBackListener().onHanlderSuccess(imagePicker.getImagePickRequestCode(), imagePicker.getSelectedImagesList());
                 finish();
             } else
                 LogUtil.e(imagePicker.getPickerConfig().getLog(), "--------------- 未设置回调 ----------------");
         }
-
-
     }
 
 
@@ -171,16 +165,17 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
 
     private void initPop() {
         folderPopWindow = new FolderPopWindow(ImageSelectActivity.this, foldersAdapter);
-
         foldersAdapter.setImageFolders(imagePicker.getImageFolderList());
         foldersAdapter.notifyDataSetChanged();
         foldersAdapter.setOnItemClickListener(new FolderListAdapter.CustomItemOnClick() {
             @Override
             public void onItemClick(int pos) {
-                foldersAdapter.setCurrentFolderIndex(pos);
-                adapter.setImages(imagePicker.getImageFolderList().get(pos).getImageInfoList());
-                adapter.notifyDataSetChanged();
-                btn_dir.setText(imagePicker.getImageFolderList().get(pos).getName());
+                if (pos != imagePicker.getCurrentFolderIndex()) {//目标文件夹就是当前文件夹，则不刷新adapter
+                    foldersAdapter.setCurrentFolderIndex(pos);
+                    adapter.setImages(imagePicker.getImageFolderList().get(pos).getImageInfoList());
+                    adapter.notifyDataSetChanged();
+                    btn_dir.setText(imagePicker.getImageFolderList().get(pos).getName());
+                }
                 if (folderPopWindow != null && folderPopWindow.isShowing()) {
                     folderPopWindow.dismiss();
                 }

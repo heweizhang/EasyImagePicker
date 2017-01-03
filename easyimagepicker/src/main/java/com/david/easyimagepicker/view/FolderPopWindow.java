@@ -1,6 +1,5 @@
 package com.david.easyimagepicker.view;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,22 +11,20 @@ import android.widget.PopupWindow;
 
 import com.david.easyimagepicker.R;
 import com.david.easyimagepicker.adapter.FolderListAdapter;
-import com.david.easyimagepicker.util.PixelUtil;
 
 /**
  * Created by david on 2016/12/22.
  */
 
 public class FolderPopWindow extends PopupWindow {
-
-
-    private RecyclerView rv_folderview;
+    private View view;
+    private Context context;
 
     public FolderPopWindow(Context context, FolderListAdapter folderListAdapter) {
         super(context);
-
-        View view = View.inflate(context, R.layout.pop_folders_list, null);
-        rv_folderview = (RecyclerView) view.findViewById(R.id.rv_folderview);
+        this.context = context;
+        view = View.inflate(context, R.layout.pop_folders_list, null);
+        RecyclerView rv_folderview = (RecyclerView) view.findViewById(R.id.rv_folderview);
         LinearLayoutManager manager = new LinearLayoutManager(context);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         rv_folderview.setLayoutManager(manager);
@@ -40,12 +37,25 @@ public class FolderPopWindow extends PopupWindow {
         setOutsideTouchable(true);
         setBackgroundDrawable(new ColorDrawable(0));
         setAnimationStyle(0);
-        view.setAnimation(AnimationUtils.loadAnimation(context, R.anim.gf_flip_horizontal_in));
 
+        view.findViewById(R.id.view_empty).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
 
     }
 
-    public interface OnItemClickListener{
-        void onItemClick();
+    @Override
+    public void showAtLocation(View parent, int gravity, int x, int y) {
+        super.showAtLocation(parent, gravity, x, y);
+        view.setAnimation(AnimationUtils.loadAnimation(context,R.anim.pop_enter_anim));
+    }
+
+    @Override
+    public void dismiss() {
+        view.setAnimation(AnimationUtils.loadAnimation(context,R.anim.pop_exist_anim));
+        super.dismiss();
     }
 }
