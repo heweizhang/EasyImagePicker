@@ -1,12 +1,15 @@
 package com.david.easyimagepicker;
 
 import android.content.Intent;
+import android.os.Build;
+import android.widget.Toast;
 
 import com.david.easyimagepicker.entity.ImageFolder;
 import com.david.easyimagepicker.entity.ImageInfo;
 import com.david.easyimagepicker.imageloader.ImageLoader;
 import com.david.easyimagepicker.ui.ImageSelectActivity;
 import com.david.easyimagepicker.util.LogUtil;
+import com.david.easyimagepicker.util.PermissionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,6 +74,8 @@ public class EasyImagePicker {
     }
 
     public void openPicker(int requestCallBackCode, int multipleLimit, ArrayList<ImageInfo> selectedImagesList, ImagePickerResultCallBack resultCallBack) {
+
+
         if (null == resultCallBack) {
             LogUtil.e(getPickerConfig().getLog(), "please init the resultCallBack");
             return;
@@ -101,7 +106,6 @@ public class EasyImagePicker {
         }
         imagePickRequestCode = requestCallBackCode;
 
-        //TODO:6.0权限动态申请
         getPickerConfig().getContext().startActivity(new Intent(getPickerConfig().getContext(), ImageSelectActivity.class));
 
     }

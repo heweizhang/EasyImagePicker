@@ -1,6 +1,7 @@
 package com.david.easyimagepicker.ui;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.david.easyimagepicker.EasyImagePicker;
 import com.david.easyimagepicker.ImageSourceHelper;
@@ -17,6 +19,7 @@ import com.david.easyimagepicker.R;
 import com.david.easyimagepicker.adapter.FolderListAdapter;
 import com.david.easyimagepicker.adapter.ImageGridAdapter;
 import com.david.easyimagepicker.util.LogUtil;
+import com.david.easyimagepicker.util.PermissionUtils;
 import com.david.easyimagepicker.view.FolderPopWindow;
 
 
@@ -26,7 +29,7 @@ import com.david.easyimagepicker.view.FolderPopWindow;
  * email:17505926606@163.com
  */
 
-public class ImageSelectActivity extends BaseImageActivity implements ImageSourceHelper.ImagesLoaderListener, View.OnClickListener, EasyImagePicker.OnImageSelectedChangedListener {
+public class ImageSelectActivity extends BaseImageActivity implements View.OnClickListener, EasyImagePicker.OnImageSelectedChangedListener {
     private RecyclerView rv_photoviews;
     private Button btn_preview, btn_ok, btn_dir;
     private RelativeLayout footer_bar, topbar;
@@ -43,12 +46,30 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_imageselect);
-        imagePicker = EasyImagePicker.getInstance();
-        initView();
-        setPickerTheme();
 
-        new ImageSourceHelper(this, null, this);//TODO: 获取所有图片资源，读取速度非常快，不算耗时操作，因此直接在主线程中获取
-        imagePicker.setImageSelectedChangedListener(this);//设置图片选中未选中回调
+        //6.0权限动态申请
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+            PermissionUtils.getInstance(this).requestPermissions(1000, new PermissionUtils.OnPermissionRequestListener() {
+                @Override
+                public void onPermissionGranted() {
+                    imagePicker = EasyImagePicker.getInstance();
+                    initView();
+                    setPickerTheme();
+
+                    new ImageSourceHelper(ImageSelectActivity.this, null, new ImageLoadCallBackListener());//TODO: 获取所有图片资源，读取速度非常快，不算耗时操作，因此直接在主线程中获取?
+                    imagePicker.setImageSelectedChangedListener(ImageSelectActivity.this);//设置图片选中未选中回调
+                }
+
+                @Override
+                public void onPermissionDenied() {
+                    Toast.makeText(ImageSelectActivity.this, "用户没有授权，无法获取图库信息", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+            }, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        }
+
+
     }
 
     private void initView() {
@@ -96,20 +117,25 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
             adapter.notifyDataSetChanged();
     }
 
-    /**
-     * 图片信息加载完成
-     */
-    @Override
-    public void onImagesLoaded() {
-        if (imagePicker.getImageFolderList() != null && imagePicker.getImageFolderList().size() != 0) {
-            image_loading.setVisibility(View.GONE);
-            //设置数据
-            adapter.setImages(imagePicker.getImageFolderList().get(0).getImageInfoList());//默认第一个文件夹即：全部图片
-            adapter.notifyDataSetChanged();
-        } else {
-            image_loading.setText("抱歉，没有找到照片~");
+
+    private class ImageLoadCallBackListener implements ImageSourceHelper.ImagesLoaderListener{
+
+        /**
+         * 图片信息加载完成
+         */
+        @Override
+        public void onImagesLoaded() {
+            if (imagePicker.getImageFolderList() != null && imagePicker.getImageFolderList().size() != 0) {
+                image_loading.setVisibility(View.GONE);
+                //设置数据
+                adapter.setImages(imagePicker.getImageFolderList().get(0).getImageInfoList());//默认第一个文件夹即：全部图片
+                adapter.notifyDataSetChanged();
+            } else {
+                image_loading.setText("抱歉，没有找到照片~");
+            }
         }
     }
+
 
     /**
      * 根据配置设置主题
@@ -198,8 +224,10 @@ public class ImageSelectActivity extends BaseImageActivity implements ImageSourc
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //TODO 如何回收内存
-        imagePicker.getSelectedImagesList().clear();
-        imagePicker.setCurrentFolderIndex(0);
+        if (imagePicker != null) {
+            //TODO 如何回收内存
+            imagePicker.getSelectedImagesList().clear();
+            imagePicker.setCurrentFolderIndex(0);
+        }
     }
 }

@@ -3,11 +3,15 @@ package com.david.easyimagepicker.ui;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.david.easyimagepicker.EasyImagePicker;
+import com.david.easyimagepicker.util.LogUtil;
+import com.david.easyimagepicker.util.PermissionUtils;
 import com.david.easyimagepicker.view.SystemBarTintManager;
 
 /**
@@ -15,7 +19,7 @@ import com.david.easyimagepicker.view.SystemBarTintManager;
  * 沉浸式状态栏：https://github.com/jgilfelt/SystemBarTint
  */
 
-public class BaseImageActivity extends AppCompatActivity {
+public class BaseImageActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback{
     protected SystemBarTintManager tintManager;
 
     @Override
@@ -41,5 +45,12 @@ public class BaseImageActivity extends AppCompatActivity {
             winParams.flags &= ~bits;
         }
         win.setAttributes(winParams);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        LogUtil.e(EasyImagePicker.getInstance().getPickerConfig().getLog(),"onRequestPermissionsResult :"+ permissions.toString());
+        PermissionUtils.getInstance(this).onRequestPermissionsResult(requestCode,permissions,grantResults);
     }
 }

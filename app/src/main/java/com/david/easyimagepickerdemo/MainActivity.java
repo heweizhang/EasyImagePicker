@@ -2,6 +2,8 @@ package com.david.easyimagepickerdemo;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
@@ -11,10 +13,11 @@ import com.david.easyimagepicker.PickerConfig;
 import com.david.easyimagepicker.PickerThmeConfig;
 import com.david.easyimagepicker.entity.ImageInfo;
 import com.david.easyimagepicker.util.LogUtil;
+import com.david.easyimagepicker.util.PermissionUtils;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
     private ArrayList<ImageInfo> list = new ArrayList<>();
     private TextView tv_show_result;
 
@@ -82,5 +85,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
 }
