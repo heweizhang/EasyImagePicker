@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity{
         PickerThmeConfig thmeConfig = new PickerThmeConfig.Builder()
                 .setTitleBarBgColor(R.color.theme_color)//标题栏，底部背景
                 .setBackBtnIcon(R.mipmap.ic_launcher)//标题栏返回按钮图标
-                .setBackBtnBg(R.drawable.selector_image_select_back)//标题栏返回按钮图标背景
                 .setOkBtnBg(R.drawable.selector_image_ok)//标题栏确定按钮背景
                 .setTextColor(Color.parseColor("#ffffff"))//不能使用R.color...的方式
                 .setPartingLineColor(Color.parseColor("#ffffff"))//标题栏分竖直割线颜色

@@ -15,7 +15,7 @@ import com.david.easyimagepicker.util.PermissionUtils;
 import com.david.easyimagepicker.view.SystemBarTintManager;
 
 /**
- * Created by Administrator on 2016/12/21.
+ * Created by david on 2016/12/21.
  * 沉浸式状态栏：https://github.com/jgilfelt/SystemBarTint
  */
 
