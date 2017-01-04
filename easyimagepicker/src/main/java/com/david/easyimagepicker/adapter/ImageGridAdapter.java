@@ -49,9 +49,9 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, final int viewType) {
-         View view = LayoutInflater.from(activity).inflate(R.layout.item_rv_image_gridview, parent, false);
+        View view = LayoutInflater.from(activity).inflate(R.layout.item_rv_image_gridview, parent, false);
         final ItemViewHolder itemViewHolder = new ItemViewHolder(view);
-        if(customItemOnClick != null){
+        if (customItemOnClick != null) {
             itemViewHolder.view_mask.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -78,7 +78,7 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 
         if (imagePicker.getPickerConfig().getAnimRes() != 0) {//读取配置文件，判断是否加载动画
-            ((ItemViewHolder) (holder)).iv_thumbnail.setAnimation(AnimationUtils.loadAnimation(activity, imagePicker.getPickerConfig().getAnimRes() ));
+            ((ItemViewHolder) (holder)).iv_thumbnail.setAnimation(AnimationUtils.loadAnimation(activity, imagePicker.getPickerConfig().getAnimRes()));
         }
 
         ((ItemViewHolder) holder).cb_check.setOnClickListener(new View.OnClickListener() {
@@ -99,20 +99,17 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             }
         });
 
-        //单选则隐藏checkBox
-        if (multipleLimit == 1) {
-            ((ItemViewHolder) holder).cb_check.setVisibility(View.GONE);
+
+        ((ItemViewHolder) holder).cb_check.setVisibility(View.VISIBLE);
+        boolean checked = mSelectedImages.contains(images.get(position));
+        if (checked) {
+            ((ItemViewHolder) holder).view_mask.setVisibility(View.VISIBLE);
+            ((ItemViewHolder) holder).cb_check.setChecked(true);
         } else {
-            ((ItemViewHolder) holder).cb_check.setVisibility(View.VISIBLE);
-            boolean checked = mSelectedImages.contains(images.get(position));
-            if (checked) {
-                ((ItemViewHolder) holder).view_mask.setVisibility(View.VISIBLE);
-                ((ItemViewHolder) holder).cb_check.setChecked(true);
-            } else {
-                ((ItemViewHolder) holder).view_mask.setVisibility(View.GONE);
-                ((ItemViewHolder) holder).cb_check.setChecked(false);
-            }
+            ((ItemViewHolder) holder).view_mask.setVisibility(View.GONE);
+            ((ItemViewHolder) holder).cb_check.setChecked(false);
         }
+
 
         imagePicker.getPickerConfig().getImageLoader().displayImage(activity, images.get(position).getImagePath(),
                 ((ItemViewHolder) (holder)).iv_thumbnail, images.get(position).getImageWidth(),
@@ -137,11 +134,11 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-    public void setItemOnClickListener(CustomItemOnClick itemOnClick){
+    public void setItemOnClickListener(CustomItemOnClick itemOnClick) {
         this.customItemOnClick = itemOnClick;
     }
 
-    public interface CustomItemOnClick{
+    public interface CustomItemOnClick {
         void onItemClick(int pos);
     }
 }

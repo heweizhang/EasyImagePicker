@@ -118,7 +118,7 @@ public class ImageSelectActivity extends BaseImageActivity implements View.OnCli
     }
 
 
-    private class ImageLoadCallBackListener implements ImageSourceHelper.ImagesLoaderListener{
+    private class ImageLoadCallBackListener implements ImageSourceHelper.ImagesLoaderListener {
 
         /**
          * 图片信息加载完成
@@ -212,7 +212,11 @@ public class ImageSelectActivity extends BaseImageActivity implements View.OnCli
 
     @Override
     public void onImageSelectedChanged() {
-        btn_ok.setText("完成(" + imagePicker.getSelectedImagesList().size() + "/" + imagePicker.getMultipleLimit() + ")");
+        if (imagePicker.getMultipleLimit() == 1) {
+            btn_ok.setText("完成");
+        } else
+            btn_ok.setText("完成(" + imagePicker.getSelectedImagesList().size() + "/" + imagePicker.getMultipleLimit() + ")");
+
         if (imagePicker.getSelectedImagesList().size() == 0) {
             btn_preview.setVisibility(View.GONE);
         } else {

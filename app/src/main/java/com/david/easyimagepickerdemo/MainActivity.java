@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity{
     private void openEasyImagePicker() {
 
         //不区分单选多选，传入1即为单选,需要显示初始化已选中图片，需要传入list,或直接传入null
-        EasyImagePicker.getInstance().openPicker(IMAGEPICKERREQUESTCODE, 10, list, new EasyImagePicker.ImagePickerResultCallBack() {
+        EasyImagePicker.getInstance().openPicker(IMAGEPICKERREQUESTCODE, 1, null, new EasyImagePicker.ImagePickerResultCallBack() {
             @Override
             public void onHanlderSuccess(int requestCode, ArrayList<ImageInfo> resultList) {
                 if (requestCode == IMAGEPICKERREQUESTCODE) {
