@@ -8,19 +8,15 @@
 
 
 
-###### TODO：
-
-ImageInfo 重写equqls ?  
-android6.0以上权限问题  
+###### TODO： 
 PreViewActivity viewpager 滑动至边界后，图片大小缩放至初始化大小  
-PreViewActivity 顶栏问题：设顶栏背景为透明，Activity为全屏，点击时隐藏topBar,状态栏以及bottomBar  
 EasyImagePicker如何回收？  
 
 #### 已完成功能：
 使用建造者模式，可以轻松配置主题  
 单图，多图选择，预览  
 沉浸式顶栏  
-
+6.0权限动态申请
 
 #### 如何使用
 ###### 初始化图片选择器：  
