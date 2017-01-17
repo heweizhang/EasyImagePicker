@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -40,6 +41,7 @@ public class ImagePreViewActivity extends BaseImageActivity implements EasyImage
     private LinearLayout topBar, bottomBar;
     private RelativeLayout view_root;
     private View partingLine;
+    private Button btn_ok;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,7 +58,12 @@ public class ImagePreViewActivity extends BaseImageActivity implements EasyImage
         btn_back = (ImageView) findViewById(R.id.btn_back);
         topBar = (LinearLayout) findViewById(R.id.ll_topbar);
         bottomBar = (LinearLayout) findViewById(R.id.ll_bottombar);
+        btn_ok = (Button) findViewById(R.id.btn_ok);
         partingLine = (View) findViewById(R.id.parting_line);
+        if (imagePicker.getMultipleLimit() == 1) {
+            bottomBar.setVisibility(View.GONE);
+            btn_ok.setVisibility(View.VISIBLE);
+        }
 
         if (getIntent() != null) {
             currentPos = getIntent().getIntExtra("currentPos", 0);
@@ -93,6 +100,9 @@ public class ImagePreViewActivity extends BaseImageActivity implements EasyImage
         bottomBar.setBackgroundResource(imagePicker.getPickerConfig().getPickerThemeConfig().getTitleBarBgColor());
         partingLine.setBackgroundColor(imagePicker.getPickerConfig().getPickerThemeConfig().getPartingLineColor());
 
+        btn_ok.setBackgroundResource(imagePicker.getPickerConfig().getPickerThemeConfig().getOkBtnBg());
+        btn_ok.setTextColor(imagePicker.getPickerConfig().getPickerThemeConfig().getTextColor());
+
     }
 
     private void initListener() {
@@ -101,6 +111,16 @@ public class ImagePreViewActivity extends BaseImageActivity implements EasyImage
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                setResult(RESULT_OK, getIntent());
+                finish();
+            }
+        });
+
+        btn_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imagePicker.addSelectedImagesList(imageInfos.get(currentPos), true);
                 setResult(RESULT_OK, getIntent());
                 finish();
             }
@@ -164,7 +184,9 @@ public class ImagePreViewActivity extends BaseImageActivity implements EasyImage
 //            topBar.setAnimation(AnimationUtils.loadAnimation(this, R.anim.top_in));
             bottomBar.setAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_in));
             topBar.setVisibility(View.VISIBLE);
-            bottomBar.setVisibility(View.VISIBLE);
+            if (imagePicker.getMultipleLimit() > 1) {
+                bottomBar.setVisibility(View.VISIBLE);
+            }
 
             tintManager.setStatusBarTintResource(EasyImagePicker.getInstance().getPickerConfig().getPickerThemeConfig().getTitleBarBgColor());//通知栏所需颜色
             //Activity全屏显示，但状态栏不会被隐藏覆盖，状态栏依然可见，Activity顶端布局部分会被状态遮住
@@ -196,9 +218,12 @@ public class ImagePreViewActivity extends BaseImageActivity implements EasyImage
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            setResult(RESULT_OK, getIntent());
-            finish();
+        if (imagePicker.getMultipleLimit() > 1) {
+
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                setResult(RESULT_OK, getIntent());
+                finish();
+            }
         }
         return super.onKeyDown(keyCode, event);
     }

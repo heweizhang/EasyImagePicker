@@ -10,16 +10,15 @@
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#000000"
-       >
+        android:background="#000000">
 
     </com.david.easyimagepicker.view.ViewPagerFixed>
 
     <LinearLayout
         android:id="@+id/ll_topbar"
         android:layout_width="match_parent"
-        android:background="#cc22292c"
-        android:layout_height="48dp">
+        android:layout_height="48dp"
+        android:background="#cc22292c">
 
         <ImageView
             android:id="@+id/btn_back"
@@ -44,11 +43,34 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="8dp"
-           android:layout_gravity="center_vertical"
             android:text="1/99"
             android:textColor="#ffffff"
             android:textSize="16dp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btn_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/selector_image_ok"
+            android:minHeight="30dp"
+            android:minWidth="50dp"
+            android:visibility="gone"
+            android:padding="8dp"
+            android:text=" 选择 "
+            android:textColor="#ffffff"
+            android:textSize="14dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -68,22 +90,25 @@
             android:padding="5dp" />
 
         <TextView
+            android:id="@+id/tv_select"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="@string/select"
             android:textColor="@color/white" />
+
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
+
         <TextView
             android:id="@+id/tv_selected"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="5dp"
-            android:text="已选(9/9)"/>
+            android:text="已选(9/9)"
+            android:textColor="@color/white" />
     </LinearLayout>
 </RelativeLayout>

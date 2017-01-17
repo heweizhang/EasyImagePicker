@@ -15,7 +15,15 @@
         android:id="@+id/btn_view_images"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="打开图库" />
+        android:text="多选图片" />
+
+    <Button
+        android:id="@+id/btn_view_one_image"
+        android:layout_width="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content"
+        android:text="单选图片" />
+
 
     <TextView
         android:id="@+id/tv_show_result"

@@ -29,7 +29,7 @@ EasyImagePicker如何回收？
 //初始化EasyImagePicker,必须调用一次，可在AppLication中初始化,也可以在普通Activity或fragment中
 //多次初始化，配置为覆盖操作，即最后一次的配置生效
 //自定义EasyImagePicker主题
-PickerThmeConfig thmeConfig = new PickerThmeConfig.Builder()
+PickerThemeConfig themeConfig = new PickerThemeConfig.Builder()
     .setTitleBarBgColor(R.color.theme_color)//标题栏，底部背景
     .setBackBtnIcon(R.mipmap.ic_launcher)//标题栏返回按钮图标
     .setBackBtnBg(R.drawable.selector_image_select_back)//标题栏返回按钮图标背景
@@ -42,7 +42,7 @@ PickerConfig config = new PickerConfig.Builder(this, new GlideImageLoader())//�
     .setAnimRes(0)//传入0为不显示动画，不传显示默认动画，用户也可以传入自定义的动画id
     .setLog("test") //默认显示调试log，传入null为不打印
     .setImageWidthSize(3) //图片选择器显示列数，默认为3列
-    .setPickerThmeConfig(thmeConfig)//传入自定义主题,不传入使用默认主题（仿微信）
+    .setPickerTehmeConfig(themeConfig)//传入自定义主题,不传入使用默认主题（仿微信）
     .build();
 //初始化EasyImagePicker
 EasyImagePicker.getInstance().init(config);

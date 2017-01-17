@@ -29,6 +29,12 @@ public class MainActivity extends AppCompatActivity{
                 openEasyImagePicker();
             }
         });
+        findViewById(R.id.btn_view_one_image).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openEasyImagePickerSelectOne();
+            }
+        });
 
         initEasyImagePicker();
     }
@@ -60,7 +66,7 @@ public class MainActivity extends AppCompatActivity{
     private void openEasyImagePicker() {
 
         //不区分单选多选，传入1即为单选,需要显示初始化已选中图片，需要传入list,或直接传入null
-        EasyImagePicker.getInstance().openPicker(IMAGEPICKERREQUESTCODE, 1, null, new EasyImagePicker.ImagePickerResultCallBack() {
+        EasyImagePicker.getInstance().openPicker(IMAGEPICKERREQUESTCODE,5, list, new EasyImagePicker.ImagePickerResultCallBack() {
             @Override
             public void onHanlderSuccess(int requestCode, ArrayList<ImageInfo> resultList) {
                 if (requestCode == IMAGEPICKERREQUESTCODE) {
@@ -72,6 +78,23 @@ public class MainActivity extends AppCompatActivity{
                         sb.append(i.getImagePath() + "\n");
                     }
                     tv_show_result.setText(sb.toString());
+                }
+            }
+
+            @Override
+            public void onHanlderFailure(int requestCode, String errorMsg) {
+                LogUtil.e("info", errorMsg);
+            }
+        });
+    }
+
+    private void openEasyImagePickerSelectOne(){
+        //不区分单选多选，传入1即为单选,需要显示初始化已选中图片，需要传入list,或直接传入null
+        EasyImagePicker.getInstance().openPicker(IMAGEPICKERREQUESTCODE, new EasyImagePicker.ImagePickerResultCallBack() {
+            @Override
+            public void onHanlderSuccess(int requestCode, ArrayList<ImageInfo> resultList) {
+                if (requestCode == IMAGEPICKERREQUESTCODE) {
+                    tv_show_result.setText(resultList.get(0).getImagePath().toString());
                 }
             }
 

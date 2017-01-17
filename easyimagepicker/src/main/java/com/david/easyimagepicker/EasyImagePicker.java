@@ -110,6 +110,28 @@ public class EasyImagePicker {
 
     }
 
+    public void openPicker(int requestCallBackCode, ImagePickerResultCallBack resultCallBack) {
+
+
+        if (null == resultCallBack) {
+            LogUtil.e(getPickerConfig().getLog(), "please init the resultCallBack");
+            return;
+        } else
+            resultCallBackListener = resultCallBack;
+
+        if (null == getPickerConfig()) {
+            LogUtil.e(getPickerConfig().getLog(), "pickerConfig is null,please init it in the first");
+            resultCallBack.onHanlderFailure(requestCallBackCode, "please init easyImagePicker!");
+            return;
+        }
+
+        this.multipleLimit = 1;
+        imagePickRequestCode = requestCallBackCode;
+
+        getPickerConfig().getContext().startActivity(new Intent(getPickerConfig().getContext(), ImageSelectActivity.class));
+
+    }
+
     public ArrayList<ImageInfo> getSelectedImagesList() {
         return selectedImagesList;
     }

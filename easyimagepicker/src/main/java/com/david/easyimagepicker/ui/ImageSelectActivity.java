@@ -37,6 +37,7 @@ public class ImageSelectActivity extends BaseImageActivity implements View.OnCli
     private ImageGridAdapter adapter;
     private FolderListAdapter foldersAdapter;
     private final int REQUEST_GO_PREVIEW = 1111;
+    private final int REQUEST_GO_PREVIEW_BY_SELECT_ONE = 1112;
     private EasyImagePicker imagePicker;
     private TextView image_loading, tv_des;
     private ImageView btn_back;
@@ -105,7 +106,10 @@ public class ImageSelectActivity extends BaseImageActivity implements View.OnCli
                 Intent intent = new Intent(ImageSelectActivity.this, ImagePreViewActivity.class);
                 intent.putExtra("images", imagePicker.getImageFolderList().get(imagePicker.getCurrentFolderIndex()).getImageInfoList());//当前选中文件夹
                 intent.putExtra("currentPos", pos);//当前item位置
-                startActivityForResult(intent, REQUEST_GO_PREVIEW);
+                if (imagePicker.getMultipleLimit() == 1)
+                    startActivityForResult(intent, REQUEST_GO_PREVIEW_BY_SELECT_ONE);
+                else
+                    startActivityForResult(intent, REQUEST_GO_PREVIEW);
             }
         });
     }
@@ -115,6 +119,14 @@ public class ImageSelectActivity extends BaseImageActivity implements View.OnCli
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == REQUEST_GO_PREVIEW && adapter != null)
             adapter.notifyDataSetChanged();
+        if (resultCode == RESULT_OK && requestCode == REQUEST_GO_PREVIEW_BY_SELECT_ONE) {//单选返回直接回调并finish当前Activity
+            if (imagePicker.getResultCallBackListener() != null) {
+                imagePicker.getResultCallBackListener().onHanlderSuccess(imagePicker.getImagePickRequestCode(), imagePicker.getSelectedImagesList());
+            } else
+                LogUtil.e(imagePicker.getPickerConfig().getLog(), "--------------- 未设置回调 ----------------");
+            finish();
+        }
+
     }
 
 
@@ -213,7 +225,7 @@ public class ImageSelectActivity extends BaseImageActivity implements View.OnCli
     @Override
     public void onImageSelectedChanged() {
         if (imagePicker.getMultipleLimit() == 1) {
-            btn_ok.setText("完成");
+            btn_ok.setVisibility(View.GONE);
         } else
             btn_ok.setText("完成(" + imagePicker.getSelectedImagesList().size() + "/" + imagePicker.getMultipleLimit() + ")");
 

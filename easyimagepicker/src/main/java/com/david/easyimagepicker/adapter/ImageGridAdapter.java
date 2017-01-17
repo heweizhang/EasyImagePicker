@@ -100,15 +100,17 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         });
 
 
-        ((ItemViewHolder) holder).cb_check.setVisibility(View.VISIBLE);
-        boolean checked = mSelectedImages.contains(images.get(position));
-        if (checked) {
-            ((ItemViewHolder) holder).view_mask.setVisibility(View.VISIBLE);
-            ((ItemViewHolder) holder).cb_check.setChecked(true);
-        } else {
-            ((ItemViewHolder) holder).view_mask.setVisibility(View.GONE);
-            ((ItemViewHolder) holder).cb_check.setChecked(false);
-        }
+        if (imagePicker.getMultipleLimit() > 1) {
+
+            boolean checked = mSelectedImages.contains(images.get(position));
+            if (checked) {
+                ((ItemViewHolder) holder).view_mask.setVisibility(View.VISIBLE);
+                ((ItemViewHolder) holder).cb_check.setChecked(true);
+            } else {
+                ((ItemViewHolder) holder).view_mask.setVisibility(View.GONE);
+                ((ItemViewHolder) holder).cb_check.setChecked(false);
+            }
+        } else ((ItemViewHolder) holder).cb_check.setVisibility(View.GONE);//单选不显示cb
 
 
         imagePicker.getPickerConfig().getImageLoader().displayImage(activity, images.get(position).getImagePath(),
