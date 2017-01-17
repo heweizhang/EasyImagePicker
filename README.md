@@ -46,7 +46,6 @@ EasyImagePicker.getInstance().init(config);
 
 ###### 调起图片选择器：
 ```
-
  //多选，需要显示初始化已选中图片，需要传入list,或直接传入null
 EasyImagePicker.getInstance().openPicker(IMAGEPICKERREQUESTCODE, 8, list, new EasyImagePicker.ImagePickerResultCallBack() {
      @Override
@@ -62,7 +61,6 @@ EasyImagePicker.getInstance().openPicker(IMAGEPICKERREQUESTCODE, 8, list, new Ea
 
 //单选
     private void openEasyImagePickerSelectOne(){
-        //不区分单选多选，传入1即为单选,需要显示初始化已选中图片，需要传入list,或直接传入null
         EasyImagePicker.getInstance().openPicker(IMAGEPICKERREQUESTCODE, new EasyImagePicker.ImagePickerResultCallBack() {
             @Override
             public void onHanlderSuccess(int requestCode, ArrayList<ImageInfo> resultList) {
