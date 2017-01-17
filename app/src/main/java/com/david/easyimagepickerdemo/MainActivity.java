@@ -2,18 +2,15 @@ package com.david.easyimagepickerdemo;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
 import com.david.easyimagepicker.EasyImagePicker;
 import com.david.easyimagepicker.PickerConfig;
-import com.david.easyimagepicker.PickerThmeConfig;
+import com.david.easyimagepicker.PickerThemeConfig;
 import com.david.easyimagepicker.entity.ImageInfo;
 import com.david.easyimagepicker.util.LogUtil;
-import com.david.easyimagepicker.util.PermissionUtils;
 
 import java.util.ArrayList;
 
@@ -40,7 +37,7 @@ public class MainActivity extends AppCompatActivity{
         //初始化EasyImagePicker,必须调用一次，可在AppLication中初始化,也可以在普通Activity或fragment中
         //多次初始化，配置为覆盖操作，即最后一次的配置生效
         // 自定义EasyImagePicker主题
-        PickerThmeConfig thmeConfig = new PickerThmeConfig.Builder()
+        PickerThemeConfig thmeConfig = new PickerThemeConfig.Builder()
                 .setTitleBarBgColor(R.color.theme_color)//标题栏，底部背景
                 .setBackBtnIcon(R.mipmap.ic_launcher)//标题栏返回按钮图标
                 .setOkBtnBg(R.drawable.selector_image_ok)//标题栏确定按钮背景

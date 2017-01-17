@@ -7,7 +7,7 @@ import android.graphics.Color;
  * 主题配置类
  */
 
-public class PickerThmeConfig {
+public class PickerThemeConfig {
 
     private int textColor;//文字颜色
     private int titleBarBgColor;//顶部标题栏背景颜色
@@ -16,7 +16,7 @@ public class PickerThmeConfig {
     private int okBtnBg;//标题栏完成按钮图标背景
     private int partingLineColor;//标题分竖直割线颜色
 
-    private PickerThmeConfig(Builder builder) {
+    private PickerThemeConfig(Builder builder) {
         this.textColor = builder.textColor;
         this.titleBarBgColor = builder.titleBarBgColor;
         this.backBtnIcon = builder.backBtnIcon;
@@ -51,8 +51,8 @@ public class PickerThmeConfig {
 
     public static class Builder {
 
-        public PickerThmeConfig build() {
-            return new PickerThmeConfig(this);
+        public PickerThemeConfig build() {
+            return new PickerThemeConfig(this);
         }
 
         private int textColor = Color.parseColor("#FFFFFF");//文字颜色

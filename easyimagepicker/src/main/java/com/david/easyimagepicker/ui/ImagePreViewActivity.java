@@ -89,9 +89,9 @@ public class ImagePreViewActivity extends BaseImageActivity implements EasyImage
 
     private void setTheme() {
 
-        topBar.setBackgroundResource(imagePicker.getPickerConfig().getPickerThmeConfig().getTitleBarBgColor());
-        bottomBar.setBackgroundResource(imagePicker.getPickerConfig().getPickerThmeConfig().getTitleBarBgColor());
-        partingLine.setBackgroundColor(imagePicker.getPickerConfig().getPickerThmeConfig().getPartingLineColor());
+        topBar.setBackgroundResource(imagePicker.getPickerConfig().getPickerThemeConfig().getTitleBarBgColor());
+        bottomBar.setBackgroundResource(imagePicker.getPickerConfig().getPickerThemeConfig().getTitleBarBgColor());
+        partingLine.setBackgroundColor(imagePicker.getPickerConfig().getPickerThemeConfig().getPartingLineColor());
 
     }
 
@@ -166,7 +166,7 @@ public class ImagePreViewActivity extends BaseImageActivity implements EasyImage
             topBar.setVisibility(View.VISIBLE);
             bottomBar.setVisibility(View.VISIBLE);
 
-            tintManager.setStatusBarTintResource(EasyImagePicker.getInstance().getPickerConfig().getPickerThmeConfig().getTitleBarBgColor());//通知栏所需颜色
+            tintManager.setStatusBarTintResource(EasyImagePicker.getInstance().getPickerConfig().getPickerThemeConfig().getTitleBarBgColor());//通知栏所需颜色
             //Activity全屏显示，但状态栏不会被隐藏覆盖，状态栏依然可见，Activity顶端布局部分会被状态遮住
             if (Build.VERSION.SDK_INT >= 16)
                 view_root.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);

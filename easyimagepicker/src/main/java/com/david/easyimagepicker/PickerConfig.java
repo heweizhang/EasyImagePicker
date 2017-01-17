@@ -13,7 +13,7 @@ import com.david.easyimagepicker.imageloader.ImageLoader;
 public class PickerConfig {
 
     private Context context;
-    private PickerThmeConfig pickerThmeConfig;
+    private PickerThemeConfig pickerThemeConfig;
     private ImageLoader imageLoader;//外部传入图片加载器
     private int imageWidthSize;//gridview显示图片列数,默认为3
     private int animRes;//动画效果:禁止动画请传入0
@@ -25,11 +25,11 @@ public class PickerConfig {
         this.imageWidthSize = builder.imageWidthSize;
         this.animRes = builder.animRes;
         this.log = builder.log;
-        this.pickerThmeConfig = builder.pickerThmeConfig;
+        this.pickerThemeConfig = builder.pickerThemeConfig;
     }
 
-    public PickerThmeConfig getPickerThmeConfig() {
-        return pickerThmeConfig;
+    public PickerThemeConfig getPickerThemeConfig() {
+        return pickerThemeConfig;
     }
 
     public String getLog() {
@@ -62,7 +62,7 @@ public class PickerConfig {
         private int imageWidthSize = 3;//gridview显示图片列数
         private int animRes = R.anim.gf_flip_horizontal_in;
         private String log = "easyimagepicker";//log tag,传入null 为不打印
-        private PickerThmeConfig pickerThmeConfig = new PickerThmeConfig.Builder().build();
+        private PickerThemeConfig pickerThemeConfig = new PickerThemeConfig.Builder().build();
 
 
         public Builder(Context context, ImageLoader imageLoader) {
@@ -70,8 +70,8 @@ public class PickerConfig {
             this.imageLoader = imageLoader;
         }
 
-        public Builder setPickerThmeConfig(PickerThmeConfig pickerThmeConfig) {
-            this.pickerThmeConfig = pickerThmeConfig;
+        public Builder setPickerThemeConfig(PickerThemeConfig pickerThemeConfig) {
+            this.pickerThemeConfig = pickerThemeConfig;
             return this;
         }
 

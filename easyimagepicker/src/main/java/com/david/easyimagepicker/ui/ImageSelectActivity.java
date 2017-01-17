@@ -141,21 +141,21 @@ public class ImageSelectActivity extends BaseImageActivity implements View.OnCli
      * 根据配置设置主题
      */
     private void setPickerTheme() {
-        btn_back.setImageResource(imagePicker.getPickerConfig().getPickerThmeConfig().getBackBtnIcon());
+        btn_back.setImageResource(imagePicker.getPickerConfig().getPickerThemeConfig().getBackBtnIcon());
 
-        tv_des.setTextColor(imagePicker.getPickerConfig().getPickerThmeConfig().getTextColor());
-        btn_ok.setTextColor(imagePicker.getPickerConfig().getPickerThmeConfig().getTextColor());
-        btn_preview.setTextColor(imagePicker.getPickerConfig().getPickerThmeConfig().getTextColor());
-        btn_dir.setTextColor(imagePicker.getPickerConfig().getPickerThmeConfig().getTextColor());
+        tv_des.setTextColor(imagePicker.getPickerConfig().getPickerThemeConfig().getTextColor());
+        btn_ok.setTextColor(imagePicker.getPickerConfig().getPickerThemeConfig().getTextColor());
+        btn_preview.setTextColor(imagePicker.getPickerConfig().getPickerThemeConfig().getTextColor());
+        btn_dir.setTextColor(imagePicker.getPickerConfig().getPickerThemeConfig().getTextColor());
 
-        topbar.setBackgroundResource(imagePicker.getPickerConfig().getPickerThmeConfig().getTitleBarBgColor());
-        footer_bar.setBackgroundResource(imagePicker.getPickerConfig().getPickerThmeConfig().getTitleBarBgColor());
+        topbar.setBackgroundResource(imagePicker.getPickerConfig().getPickerThemeConfig().getTitleBarBgColor());
+        footer_bar.setBackgroundResource(imagePicker.getPickerConfig().getPickerThemeConfig().getTitleBarBgColor());
 
-        btn_back.setBackgroundResource(imagePicker.getPickerConfig().getPickerThmeConfig().getBackBtnBg());
-        btn_ok.setBackgroundResource(imagePicker.getPickerConfig().getPickerThmeConfig().getOkBtnBg());
+        btn_back.setBackgroundResource(imagePicker.getPickerConfig().getPickerThemeConfig().getBackBtnBg());
+        btn_ok.setBackgroundResource(imagePicker.getPickerConfig().getPickerThemeConfig().getOkBtnBg());
 
-        partingLine.setBackgroundColor(imagePicker.getPickerConfig().getPickerThmeConfig().getPartingLineColor());
-        partingBottomLine.setBackgroundColor(imagePicker.getPickerConfig().getPickerThmeConfig().getPartingLineColor());
+        partingLine.setBackgroundColor(imagePicker.getPickerConfig().getPickerThemeConfig().getPartingLineColor());
+        partingBottomLine.setBackgroundColor(imagePicker.getPickerConfig().getPickerThemeConfig().getPartingLineColor());
     }
 
     @Override

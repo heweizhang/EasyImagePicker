@@ -30,7 +30,7 @@ public class BaseImageActivity extends AppCompatActivity implements ActivityComp
         }
         tintManager = new SystemBarTintManager(this);
         tintManager.setStatusBarTintEnabled(true);// 启用状态栏渐变
-        tintManager.setStatusBarTintResource(EasyImagePicker.getInstance().getPickerConfig().getPickerThmeConfig().getTitleBarBgColor());//设置状态栏颜色与ActionBar颜色相连
+        tintManager.setStatusBarTintResource(EasyImagePicker.getInstance().getPickerConfig().getPickerThemeConfig().getTitleBarBgColor());//设置状态栏颜色与ActionBar颜色相连
 
     }
 
