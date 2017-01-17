@@ -9,17 +9,14 @@
 
 
 ###### TODO：
-
-ImageInfo 重写equqls ?  
-android6.0以上权限问题  
-PreViewActivity viewpager 滑动至边界后，图片大小缩放至初始化大小  
-PreViewActivity 顶栏问题：设顶栏背景为透明，Activity为全屏，点击时隐藏topBar,状态栏以及bottomBar  
-EasyImagePicker如何回收？  
+PreViewActivity viewpager 滑动至边界后，图片大小缩放至初始化大小
+EasyImagePicker如何回收？
 
 #### 已完成功能：
-使用建造者模式，可以轻松配置主题  
-单图，多图选择，预览  
-沉浸式顶栏  
+使用建造者模式，可以轻松配置主题
+单图，多图选择，预览
+沉浸式顶栏
+6.0权限动态申请
 
 
 #### 如何使用
@@ -52,7 +49,7 @@ EasyImagePicker.getInstance().init(config);
 ###### 调起图片选择器：
 ```
 
- //不区分单选多选，传入1即为单选,需要显示初始化已选中图片，需要传入list,或直接传入null
+ //多选，需要显示初始化已选中图片，需要传入list,或直接传入null
 EasyImagePicker.getInstance().openPicker(IMAGEPICKERREQUESTCODE, 8, list, new EasyImagePicker.ImagePickerResultCallBack() {
      @Override
      public void onHanlderSuccess(int requestCode, ArrayList<ImageInfo> resultList) {
@@ -64,4 +61,22 @@ EasyImagePicker.getInstance().openPicker(IMAGEPICKERREQUESTCODE, 8, list, new Ea
           LogUtil.e("info", errorMsg);
     }
 });
+
+//单选
+    private void openEasyImagePickerSelectOne(){
+        //不区分单选多选，传入1即为单选,需要显示初始化已选中图片，需要传入list,或直接传入null
+        EasyImagePicker.getInstance().openPicker(IMAGEPICKERREQUESTCODE, new EasyImagePicker.ImagePickerResultCallBack() {
+            @Override
+            public void onHanlderSuccess(int requestCode, ArrayList<ImageInfo> resultList) {
+                if (requestCode == IMAGEPICKERREQUESTCODE) {
+                    tv_show_result.setText(resultList.get(0).getImagePath().toString());
+                }
+            }
+
+            @Override
+            public void onHanlderFailure(int requestCode, String errorMsg) {
+                LogUtil.e("info", errorMsg);
+            }
+        });
+    }
 ```
