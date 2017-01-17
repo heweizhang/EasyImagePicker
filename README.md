@@ -8,6 +8,7 @@
 
 
 
+<<<<<<< HEAD
 ###### TODO：
 PreViewActivity viewpager 滑动至边界后，图片大小缩放至初始化大小
 EasyImagePicker如何回收？
@@ -18,6 +19,17 @@ EasyImagePicker如何回收？
 沉浸式顶栏
 6.0权限动态申请
 
+=======
+###### TODO： 
+PreViewActivity viewpager 滑动至边界后，图片大小缩放至初始化大小  
+EasyImagePicker如何回收？  
+
+#### 已完成功能：
+使用建造者模式，可以轻松配置主题  
+单图，多图选择，预览  
+沉浸式顶栏  
+6.0权限动态申请
+>>>>>>> e80e46a31b283674aa8f3ca78af7863d4c920ca6
 
 #### 如何使用
 ###### 初始化图片选择器：  
